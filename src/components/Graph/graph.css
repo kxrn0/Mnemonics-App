@@ -1,0 +1,109 @@
+.graph.light {
+  --bg: transparent;
+  --color: #151352;
+  --filter: none;
+  --point-bg: #014212;
+  --tool-bg: rgb(223, 187, 187);
+  --tool-color: rgb(45, 23, 23);
+}
+
+.graph.dark {
+  --bg: rgb(14, 48, 48);
+  --color: #aefdce;
+  --filter: none;
+  --point-bg: azure;
+  --tool-bg: rgb(150, 241, 241);
+  --tool-color: rgb(19, 16, 16);
+}
+
+.graph.neom {
+  --bg: transparent;
+  --filter: drop-shadow(3px 3px 2px rgb(49, 23, 23, 0.5));
+  --point-bg: #121412;
+  --color: #132412;
+  --tool-bg: rgb(248, 242, 242);
+  --tool-color: rgb(112, 112, 131);
+}
+
+.graph {
+  background: var(--bg);
+  color: var(--color);
+  filter: var(--filter);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.graph .container {
+  display: flex;
+}
+
+.graph .container .vertical-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.graph .data-plot {
+  width: 300px;
+  position: relative;
+}
+
+.graph .points {
+  position: absolute;
+  inset: 0;
+}
+
+.graph .points .graph-point {
+  --width: 5px;
+  background: var(--point-bg);
+  border-radius: 100%;
+  position: absolute;
+  width: var(--width);
+  height: var(--width);
+}
+
+.graph .points .graph-point .data-date-score {
+  position: absolute;
+  display: none;
+}
+
+.graph .points .graph-point.active .data-date-score {
+  background: var(--tool-bg);
+  color: var(--tool-color);
+  display: block;
+  width: max-content;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  z-index: 1;
+  top: 10px;
+}
+
+.graph .points span.active {
+  --width: 10px;
+}
+
+.graph .points span:hover {
+  --width: 10px;
+}
+
+.graph .controls {
+  width: 12rem;
+  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+}
+
+.graph .controls button {
+  background-color: transparent;
+  color: var(--color);
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.25rem;
+  border: none;
+}

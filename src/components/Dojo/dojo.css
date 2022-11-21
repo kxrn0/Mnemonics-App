@@ -1,0 +1,77 @@
+.dojo {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.dojo.light {
+    --images-bg: rgb(225, 243, 89);
+    --words-bg: rgb(242, 177, 98);
+    --decimals-bg: rgb(166, 187, 249);
+    --binary-bg: rgb(0, 255, 238);
+    --color: rgb(49, 19, 19);
+    --box-shadow: none;
+    --text-shadow: none;
+}
+
+.dojo.dark {
+    --images-bg: rgb(94, 132, 78);
+    --words-bg: rgb(118, 105, 91);
+    --decimals-bg: rgb(19, 41, 109);
+    --binary-bg: rgb(11, 72, 68);
+    --color: azure;
+    --box-shadow: none;
+    --text-shadow: none;
+}
+
+.dojo.neom {
+    --images-bg: rgb(232, 238, 186);
+    --words-bg: rgb(249, 211, 166);
+    --decimals-bg: rgb(210, 219, 247);
+    --binary-bg: rgb(203, 240, 237);
+    --color: rgb(140, 85, 85);
+    --box-shadow: 5px 5px 15px 0 rgb(0, 0, 0, 0.25),
+        -5px -5px 10px 0 rgb(255, 255, 255, 0.5);
+    --text-shadow: 1px 1px 1px rgb(0, 0, 0, .75),
+        -1px -1px 0 rgb(255, 255, 255, .75);
+}
+
+.dojo a {
+    color: var(--color);
+    text-decoration: none;
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--box-shadow);
+    text-shadow: var(--text-shadow);
+    width: 290px;
+}
+
+.dojo a img {
+    background-color: azure;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.dojo a#images {
+    background: var(--images-bg);
+}
+
+.dojo a#words {
+    background: var(--words-bg);
+}
+
+.dojo a#numbers-decimal {
+    background: var(--decimals-bg);
+}
+
+.dojo a#numbers-binary {
+    background: var(--binary-bg);
+}

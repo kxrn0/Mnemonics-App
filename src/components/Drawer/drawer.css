@@ -1,0 +1,4 @@
+.drawer .bottom {
+    overflow: hidden;
+    transition: max-height 0.33s ease-in-out;
+}

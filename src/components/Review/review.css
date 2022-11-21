@@ -1,0 +1,97 @@
+.review.light {
+  --background: rgb(222, 248, 92);
+  --shadow: none;
+  --inner-shadow: none;
+  --text-shadow: none;
+}
+
+.review.dark {
+  --background: rgb(192, 198, 198);
+  --shadow: none;
+  --inner-shadow: none;
+  --text-shadow: none;
+}
+
+.review.neom {
+  --background: rgb(120, 221, 221);
+  --shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.25) inset;
+  --inner-shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.25);
+  --text-shadow: 3px 3px 3px rgb(0, 0, 0, 0.5);
+}
+
+.review {
+  background: var(--background);
+  box-shadow: var(--shadow);
+  text-shadow: var(--text-shadow);
+  width: 300px;
+  position: relative;
+  border-radius: 0.5rem;
+  border-top-left-radius: 30px;
+}
+
+.review .percentage {
+  background: rgb(31, 2, 7);
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 100%;
+  box-shadow: var(--inner-shadow);
+}
+
+.review .percentage canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.review .percentage span {
+  color: azure;
+  z-index: 1;
+  font-size: 0.8rem;
+}
+
+.review .date {
+  text-align: end;
+  padding: 1.75rem;
+}
+
+.review .details {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.review .drawer .top {
+  display: flex;
+  gap: 1rem;
+}
+
+.review .drawer .icon {
+  color: rgb(14, 61, 61);
+  font-size: 1rem;
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+}
+
+.review .drawer input[type="checkbox"] {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+}
+
+.review .drawer .errors {
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+.review .drawer .errors tbody tr:nth-child(even) {
+  background: rgba(243, 198, 198, 0.25);
+}
+.review .drawer .errors tbody tr:nth-child(odd) {
+  background: rgba(110, 117, 224, 0.25);
+}

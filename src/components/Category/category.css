@@ -1,0 +1,65 @@
+.category.light {
+  --color: rgb(84, 73, 73);
+  --text-shadow: none;
+  --train-bg: rgb(249, 213, 114);
+  --see-bg: rgb(223, 190, 190);
+  --button-color: black;
+  --box-shadow: none;
+}
+
+.category.dark {
+  --color: azure;
+  --text-shadow: none;
+  --train-bg: rgb(135, 32, 32);
+  --see-bg: rgb(18, 24, 104);
+  --button-color: rgb(220, 229, 238);
+  --box-shadow: none;
+}
+
+.category.neom {
+  --color: rgb(100, 100, 211);
+  --text-shadow: -1px -1px 2px rgb(75, 50, 50);
+  --train-bg: rgb(255, 234, 149);
+  --see-bg: rgb(253, 212, 246);
+  --button-color: black;
+  --box-shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.15),
+    -5px -5px 10px 0 rgb(255, 255, 255, 0.5);
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.category .category-name {
+  color: var(--color);
+  text-shadow: var(--text-shadow);
+  font-size: 2rem;
+  text-transform: capitalize;
+}
+
+.category .category-controls {
+  display: flex;
+  gap: 2rem;
+}
+
+.category .category-controls button {
+  color: var(--button-color);
+  box-shadow: var(--box-shadow);
+  width: 7rem;
+  padding: 0.25rem 2rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.category .category-controls .train {
+  background: var(--train-bg);
+}
+
+.category .category-controls .settings {
+  background: var(--see-bg);
+}
