@@ -25,7 +25,7 @@ export default function DaySet({ set, date }) {
       >
         {set.items.map((item, index) => (
           <p key={index}>
-            <span className="index">{index}.- </span>
+            <span className="index">{index + 1}.- </span>
             <span className="data">{item}</span>
           </p>
         ))}

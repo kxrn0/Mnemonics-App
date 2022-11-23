@@ -18,6 +18,7 @@ import {
 import logo from "./assets/app_logo.svg";
 import Train from "./components/Train/Train";
 import Test from "./components/Test/Test";
+import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
 import "./style.css";
 
 import { update_set, create_set } from "./data";
@@ -34,7 +35,7 @@ function App() {
   ]);
   const settingsRef = useRef({
     words: {
-      elements: 4,
+      elements: 5,
       secsPerEl: 3,
       animation: "none",
     },
@@ -88,25 +89,25 @@ function App() {
   }
 
   function update(review, id) {
-    // update_set(review, id);
+    update_set(review, id);
 
-    setData((prevData) =>
-      prevData.map((item) => {
-        if (item.id !== id) return item;
-        else {
-          const newAvg =
-            item.avgScore +
-            ((item.items.length - review.errors.length) / item.items.length -
-              item.avgScore) /
-              (item.items.length + 1);
-          return {
-            ...item,
-            avgScore: newAvg,
-            reviews: [...item.reviews, review],
-          };
-        }
-      })
-    );
+    // setData((prevData) =>
+    //   prevData.map((item) => {
+    //     if (item.id !== id) return item;
+    //     else {
+    //       const newAvg =
+    //         item.avgScore +
+    //         ((item.items.length - review.errors.length) / item.items.length -
+    //           item.avgScore) /
+    //           (item.items.length + 1);
+    //       return {
+    //         ...item,
+    //         avgScore: newAvg,
+    //         reviews: [...item.reviews, review],
+    //       };
+    //     }
+    //   })
+    // );
   }
 
   function create(set) {
@@ -118,89 +119,91 @@ function App() {
   return (
     <div className={`App ${theme}`}>
       <BrowserRouter>
-        <ThemeContext.Provider value={theme}>
-          <nav className="navbar">
-            <div className="logo">
-              <img src={logo} alt="" />
-              <p className="user">byme</p>
-            </div>
-            <div className="links">
-              <Link to="/">
-                <FontAwesomeIcon icon={faHome} />
-              </Link>
-              <Link to="/train">
-                <FontAwesomeIcon icon={faDumbbell} />
-              </Link>
-              <Link to="/settings">
-                <FontAwesomeIcon icon={faGear} />
-              </Link>
-              <Link to="/info">
-                <FontAwesomeIcon icon={faCircleInfo} />
-              </Link>
-            </div>
-          </nav>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Homepage
-                  set={data}
-                  process={process}
-                  set_rotten_days={set_rotten_days}
-                />
-              }
-            />
-            <Route path="/train" element={<Dojo />} />
-            {rottenDays.map((day) => (
+        <ScrollWrapper>
+          <ThemeContext.Provider value={theme}>
+            <nav className="navbar">
+              <div className="logo">
+                <img src={logo} alt="" />
+                <p className="user">byme</p>
+              </div>
+              <div className="links">
+                <Link to="/">
+                  <FontAwesomeIcon icon={faHome} />
+                </Link>
+                <Link to="/train">
+                  <FontAwesomeIcon icon={faDumbbell} />
+                </Link>
+                <Link to="/settings">
+                  <FontAwesomeIcon icon={faGear} />
+                </Link>
+                <Link to="/info">
+                  <FontAwesomeIcon icon={faCircleInfo} />
+                </Link>
+              </div>
+            </nav>
+            <Routes>
               <Route
-                key={day}
-                path={`/days/${day}`}
-                element={<DayPage sets={data} date={day} />}
-              />
-            ))}
-            {categoriesRef.current.map((cat) => (
-              <Route
-                key={cat}
-                path={`/train/${cat}`}
+                path="/"
                 element={
-                  <Category
-                    category={cat}
-                    sets={data}
+                  <Homepage
+                    set={data}
                     process={process}
-                    PreviewComponent={ReviewPreview}
                     set_rotten_days={set_rotten_days}
                   />
                 }
               />
-            ))}
-            {categoriesRef.current.map((cat) => (
+              <Route path="/train" element={<Dojo />} />
+              {rottenDays.map((day) => (
+                <Route
+                  key={day}
+                  path={`/days/${day}`}
+                  element={<DayPage sets={data} date={day} />}
+                />
+              ))}
+              {categoriesRef.current.map((cat) => (
+                <Route
+                  key={cat}
+                  path={`/train/${cat}`}
+                  element={
+                    <Category
+                      category={cat}
+                      sets={data}
+                      process={process}
+                      PreviewComponent={ReviewPreview}
+                      set_rotten_days={set_rotten_days}
+                    />
+                  }
+                />
+              ))}
+              {categoriesRef.current.map((cat) => (
+                <Route
+                  key={cat}
+                  path={`/train/${cat}/grounds`}
+                  element={
+                    <Train category={cat} settings={settingsRef.current[cat]} />
+                  }
+                />
+              ))}
               <Route
-                key={cat}
-                path={`/train/${cat}/grounds`}
-                element={
-                  <Train category={cat} settings={settingsRef.current[cat]} />
-                }
+                path="/test/"
+                element={<Test update_set={update} create_set={create} />}
               />
-            ))}
-            <Route
-              path="/test/"
-              element={<Test update_set={update} create_set={create} />}
-            />
-          </Routes>
-          <div
-            style={{
-              position: "fixed",
-              bottom: "10rem",
-              right: "2rem",
-            }}
-          >
-            <ThemeToggle
-              themes={["light", "dark", "neom"]}
-              currentTheme={theme}
-              change_theme={change_theme}
-            />
-          </div>
-        </ThemeContext.Provider>
+            </Routes>
+            <div
+              style={{
+                position: "fixed",
+                bottom: "10rem",
+                right: "2rem",
+              }}
+            >
+              <ThemeToggle
+                themes={["light", "dark", "neom"]}
+                currentTheme={theme}
+                change_theme={change_theme}
+              />
+            </div>
+          </ThemeContext.Provider>
+        </ScrollWrapper>
       </BrowserRouter>
     </div>
   );

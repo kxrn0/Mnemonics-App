@@ -8,7 +8,7 @@ export default function Test({ update_set, create_set }) {
   const [elementsOfMan, setElementsOfMan] = useState(() =>
     new Array(data.elements.length).fill("")
   );
-  const beginingOfTime = useRef(new Date());
+  const beginningOfTime = useRef(new Date());
   const navigate = useNavigate();
 
   function handle_change(event) {
@@ -21,12 +21,12 @@ export default function Test({ update_set, create_set }) {
   }
 
   async function check() {
-    const date = beginingOfTime.current.toDateString();
-    const time = `${String(beginingOfTime.current.getHours()).padStart(
+    const date = beginningOfTime.current.toDateString();
+    const time = `${String(beginningOfTime.current.getHours()).padStart(
       2,
       "0"
-    )}:${String(beginingOfTime.current.getMinutes()).padStart(2, "0")}`;
-    const duration = ~~((new Date() - beginingOfTime.current) / 1000);
+    )}:${String(beginningOfTime.current.getMinutes()).padStart(2, "0")}`;
+    const duration = ~~((new Date() - beginningOfTime.current) / 1000);
     const id = Math.random().toString();
     const errors = [];
     const review = { date, time, duration, errors, id };
@@ -63,7 +63,7 @@ export default function Test({ update_set, create_set }) {
             {data.elements.map((_, index) => (
               <li key={index}>
                 <label htmlFor={`input-${index}`}>
-                  <span>{index}.-</span>
+                  <span>{index + 1}.-</span>
                   <input
                     id={`input-${index}`}
                     type="text"

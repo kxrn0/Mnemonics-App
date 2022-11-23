@@ -1,86 +1,87 @@
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .App {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    min-height: 100vh;
-    height: 100%;
-    padding-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+  height: 100%;
+  padding-bottom: 3rem;
+  overflow: hidden;
 }
 
 .App.light {
-    --background: rgb(213, 218, 222);
-    --nav-bg: rgb(131, 228, 170);
-    --subnav-bg: rgb(209, 93, 93);
-    --subbox-shadow: none;
-    --link-shadow: none;
+  --background: rgb(213, 218, 222);
+  --nav-bg: rgb(131, 228, 170);
+  --subnav-bg: rgb(209, 93, 93);
+  --subbox-shadow: none;
+  --link-shadow: none;
 }
 
 .App.dark {
-    --background: rgb(23, 23, 26);
-    --nav-bg: rgb(0, 0, 0);
-    --subnav-bg: rgb(18, 18, 70);
-    --subbox-shadow: none;
-    --link-shadow: none;
+  --background: rgb(23, 23, 26);
+  --nav-bg: rgb(0, 0, 0);
+  --subnav-bg: rgb(18, 18, 70);
+  --subbox-shadow: none;
+  --link-shadow: none;
 }
 
 .App.neom {
-    --background: rgb(120, 221, 221);
-    --nav-bg: rgb(171, 198, 236);
-    --subnav-bg: rgb(251, 251, 134);
-    --subbox-shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.25),
-        -5px -5px 10px 0 rgb(255, 255, 255, 0.65);
-    --link-shadow: drop-shadow(5px 5px 2px rgb(0, 0, 0, .25));
+  --background: rgb(120, 221, 221);
+  --nav-bg: rgb(171, 198, 236);
+  --subnav-bg: rgb(251, 251, 134);
+  --subbox-shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.25),
+    -5px -5px 10px 0 rgb(255, 255, 255, 0.65);
+  --link-shadow: drop-shadow(5px 5px 2px rgb(0, 0, 0, 0.25));
 }
 
 .App {
-    background: var(--background);
+  background: var(--background);
 }
 
 .App .navbar {
-    background: var(--nav-bg);
-    display: flex;
-    flex-direction: column;
+  background: var(--nav-bg);
+  display: flex;
+  flex-direction: column;
 }
 
 .App .navbar .logo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
 }
 
 .App .navbar .logo .user {
-    background: rgb(206, 140, 140);
-    color: azure;
-    display: grid;
-    place-items: center;
-    border-radius: 100%;
-    width: 3rem;
-    height: 3rem;
-    font-size: 0.75rem;
+  background: rgb(206, 140, 140);
+  color: azure;
+  display: grid;
+  place-items: center;
+  border-radius: 100%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 0.75rem;
 }
 
 .App .navbar .logo img {
-    width: 5rem;
+  width: 5rem;
 }
 
 .App .navbar .links {
-    background: var(--subnav-bg);
-    box-shadow: var(--subbox-shadow);
-    display: flex;
-    justify-content: space-around;
-    padding: 0.5rem;
+  background: var(--subnav-bg);
+  box-shadow: var(--subbox-shadow);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem;
 }
 
 .App .navbar .links a {
-    color: azure;
-    filter: var(--link-shadow);
+  color: azure;
+  filter: var(--link-shadow);
 }

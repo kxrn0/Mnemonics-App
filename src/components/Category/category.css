@@ -46,6 +46,10 @@
   gap: 2rem;
 }
 
+.category .category-controls a {
+  text-decoration: none;
+}
+
 .category .category-controls button {
   color: var(--button-color);
   box-shadow: var(--box-shadow);

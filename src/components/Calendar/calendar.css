@@ -162,7 +162,7 @@
     width: var(--tool-width);
     transform: scale(0);
     transform-origin: top;
-    transition: transform 0.33s, opacity 1s;
+    transition: transform 0.33s, opacity .33s;
     opacity: 0;
     z-index: 1;
     display: flex;

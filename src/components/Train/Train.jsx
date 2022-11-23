@@ -5,6 +5,8 @@ import get_words from "../../utilities/get_words";
 import get_numbers from "../../utilities/get_numbers";
 import get_images from "../../utilities/get_images";
 
+import "./train.css";
+
 export default function Train({ category, settings }) {
   const params = useLocation().state;
   const [elements, _] = useState(() => {
@@ -34,9 +36,9 @@ export default function Train({ category, settings }) {
   }, []);
 
   return (
-    <div className="train">
+    <div className="train" style={{ "--duration": `${settings.secsPerEl}s` }}>
       {currentIndex < elements.length ? (
-        <p>{elements[currentIndex]}</p>
+        <p className="anime">{elements[currentIndex]}</p>
       ) : (
         <Link
           to="/test/"

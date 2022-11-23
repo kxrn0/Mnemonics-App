@@ -1,0 +1,32 @@
+.train {
+  --duration: 3s;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  flex-grow: 1;
+  /* min-height: 100vh; */
+}
+
+.train .anime {
+  animation: anime var(--duration) ease-in-out infinite;
+}
+
+@keyframes anime {
+  from {
+    /* background: yellow; */
+    transform: translateY(-100vh);
+  }
+
+  20% {
+    transform: translateY(0);
+  }
+
+  80% {
+    transform: translateY(0);
+  }
+
+  to {
+    /* background: blue; */
+    transform: translateY(100vh);
+  }
+}

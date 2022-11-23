@@ -7,7 +7,7 @@
   --review-bg: rgb(204, 213, 236);
   --delete-bg: rgb(236, 93, 117);
   --data-bg: azure;
-  --data-color: red;
+  --data-color: rgb(139, 25, 25);
 }
 
 .day-set.dark {

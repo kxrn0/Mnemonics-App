@@ -4,10 +4,12 @@ import ThemeContext from "../../theme_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import "./red.css";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 export default function Red() {
   const [isLoading, setIsLoading] = useState(true);
   const [content, setContent] = useState({ link: "hi" });
+  const [errorState, setErrorState] = useState(false);
   const subs = ["todayilearned", "showerthoughts", "lifeprotips"];
   const intervals = ["month", "year", "all"];
   const theme = useContext(ThemeContext);
@@ -16,6 +18,7 @@ export default function Red() {
     const sub = subs[~~(Math.random() * subs.length)];
     const interval = intervals[~~(Math.random() * intervals.length)];
 
+    setErrorState(false);
     setIsLoading(true);
 
     try {
@@ -39,6 +42,7 @@ export default function Red() {
       setIsLoading(false);
     } catch (wrror) {
       console.log(wrror);
+      setErrorState(true);
     }
   }
 
@@ -49,7 +53,20 @@ export default function Red() {
   return (
     <div className={`red ${theme}`}>
       {isLoading ? (
-        <Loading />
+        <div className="loading-screen">
+          <Loading />
+          {errorState ? (
+            <p>
+              <button onClick={() => setErrorState(false)}>
+                <FontAwesomeIcon icon={faClose} />
+              </button>{" "}
+              couldn't find the internet!{" "}
+              <button onClick={load_content}>
+                <FontAwesomeIcon icon={faArrowsRotate} />
+              </button>
+            </p>
+          ) : null}
+        </div>
       ) : (
         <div className="red-content">
           <div className="text">

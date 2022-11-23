@@ -59,7 +59,7 @@ export default function Review({ review, totalItems }) {
               <tbody>
                 {review.errors.map((error) => (
                   <tr key={error.index}>
-                    <td>{error.index}</td>
+                    <td>{error.index + 1}</td>
                     <td>{error.incAnswer}</td>
                   </tr>
                 ))}
