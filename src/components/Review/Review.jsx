@@ -41,7 +41,7 @@ export default function Review({ review, totalItems }) {
         <canvas ref={canvasRef} width="60" height="60"></canvas>
         <span>{percentage.current}%</span>
       </div>
-      <p className="date">{review.date}</p>
+      <p className="date">{review.date}, {review.time}</p>
       <div className="details">
         <p>Correct: {totalItems - review.errors.length}</p>
         <p>Incorrect: {review.errors.length}</p>

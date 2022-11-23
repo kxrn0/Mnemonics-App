@@ -1,3 +1,19 @@
+export function update_set(review, id) {
+  const set = memData.find((set) => set.id === id);
+
+  set.reviews.push(review);
+  set.avgScore =
+    set.reviews.reduce(
+      (acc, curr) =>
+        acc + (set.items.length - curr.errors.length) / set.items.length,
+      0
+    ) / set.reviews.length;
+}
+
+export function create_set(set) {
+  memData.push(set);
+}
+
 const memData = [
   {
     name: "g3ckl2",
@@ -9,6 +25,7 @@ const memData = [
       {
         date: "Tue Nov 01 2022",
         time: "08:32",
+        id: "hi",
         duration: 61,
         errors: [
           {
@@ -36,6 +53,7 @@ const memData = [
       {
         date: "Tue Nov 01 2022",
         time: "09:43",
+        id: "bye",
         duration: 126,
         errors: [
           {
@@ -55,6 +73,7 @@ const memData = [
       {
         date: "Wed Nov 02 2022",
         time: "08:12",
+        id: "byme",
         duration: 154,
         errors: [
           {
@@ -103,6 +122,7 @@ const memData = [
       {
         date: "Sun Nov 06 2022",
         time: "09:55",
+        id: "one",
         duration: 63,
         errors: [
           {
@@ -118,6 +138,7 @@ const memData = [
       {
         date: "Tue Nov 08 2022",
         time: "15:55",
+        id: "two",
         duration: 585,
         errors: [
           {
@@ -133,6 +154,7 @@ const memData = [
       {
         date: "Mon Nov 14 2022",
         time: "11:55",
+        id: "three",
         duration: 232,
         errors: [
           {

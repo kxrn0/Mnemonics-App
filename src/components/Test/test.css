@@ -1,0 +1,32 @@
+.test {
+  padding: 1rem;
+}
+
+.test .container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.test .container ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.test .container ul li {
+  flex-grow: 1;
+}
+
+.test .container input[type="text"] {
+  background: transparent;
+  font-size: 1.5rem;
+  border: none;
+  border-bottom: 1px solid gray;
+  outline: none;
+  text-align: center;
+}
+
+.test .container input[type="text"]:focus {
+  border-bottom: 2px solid black;
+}

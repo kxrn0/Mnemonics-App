@@ -3251,7 +3251,6 @@ const words = [
   "jaguar",
   "jail",
   "jailhouse",
-  "jalapeÃ±o",
   "jam",
   "jar",
   "jasmine",
@@ -6805,4 +6804,3 @@ const words = [
 ];
 
 export default words;
-

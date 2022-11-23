@@ -27,8 +27,12 @@ export default function Category({
         {category.split("-").reverse().join(" ")}
       </h1>
       <div className="category-controls">
-        <button className="train">Train</button>
-        <button className="settings">Settings</button>
+        <Link to={`/train/${category}/grounds`} state={{ newSet: true }}>
+          <button className="train">Train</button>
+        </Link>
+        <Link to={`/train/${category}/settings`}>
+          <button className="settings">Settings</button>
+        </Link>
       </div>
       <Calendar
         data={sets}
@@ -39,7 +43,7 @@ export default function Category({
       <Graph sets={sets} category={category} />
       {sets.map((set) =>
         set.type === category ? (
-          <DaySet key={set.type} set={set} date="all" />
+          <DaySet key={set.id} set={set} date="all" />
         ) : null
       )}
     </div>

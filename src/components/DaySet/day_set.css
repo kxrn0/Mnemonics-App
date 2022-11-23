@@ -3,8 +3,11 @@
   --box-shadow: none;
   --text-shadow: none;
   --see-bg: rgb(159, 246, 162);
+  --day-color: rgb(30, 4, 4);
   --review-bg: rgb(204, 213, 236);
   --delete-bg: rgb(236, 93, 117);
+  --data-bg: azure;
+  --data-color: red;
 }
 
 .day-set.dark {
@@ -12,8 +15,11 @@
   --box-shadow: none;
   --text-shadow: none;
   --see-bg: rgb(175, 209, 177);
+  --day-color: rgb(242, 245, 250);
   --review-bg: rgb(159, 170, 197);
   --delete-bg: rgb(198, 147, 155);
+  --data-bg: black;
+  --data-color: rgb(22, 22, 255);
 }
 
 .day-set.neom {
@@ -23,8 +29,11 @@
   --text-shadow: 1px 1px 1px rgb(0, 0, 0, 0.75),
     -1px -1px 0 rgb(255, 255, 255, 0.75);
   --see-bg: rgb(185, 241, 187);
+  --day-color: rgb(54, 27, 27);
   --review-bg: rgb(220, 225, 239);
   --delete-bg: rgb(242, 141, 158);
+  --data-bg: azure;
+  --data-color: gray;
 }
 
 .day-set.light.numbers-decimal {
@@ -94,6 +103,7 @@
 }
 
 .day-set .set-name {
+  color: var(--day-color);
   display: flex;
   gap: 1rem;
   display: flex;
@@ -102,6 +112,7 @@
 }
 
 .day-set .set-name button {
+  color: var(--day-color);
   background: transparent;
   border: none;
   width: 1.5rem;
@@ -114,6 +125,7 @@
 }
 
 .day-set .set-details {
+  color: var(--day-color);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -143,8 +155,39 @@
   gap: 1rem;
 }
 
+.day-set .reviews-section .reviews-label {
+  color: var(--day-color);
+}
+
 .day-set .delete-set {
   background: var(--delete-bg);
   color: azure;
   padding: 0.5rem 1rem;
+}
+
+.day-set .slide-screen .screen-content {
+  background: var(--data-bg);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.day-set .slide-screen .screen-content p {
+  color: var(--data-color);
+  text-shadow: var(--text-shadow);
+  padding: 1rem 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.day-set .slide-screen .screen-content .data {
+  font-size: 1.5rem;
+}
+
+.day-set .slide-screen .screen-content p:not(:last-child) {
+  border-bottom: 1px solid;
 }
