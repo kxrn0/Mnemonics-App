@@ -1,0 +1,59 @@
+.slider {
+  --slider-height: 8px;
+  --slider-width: 250px;
+  --slider-bg: #18171f;
+  --thumb-height: 28px;
+  --thumb-width: 28px;
+  --thumb-border-radius: 50%;
+  --thumb-hover: #18171f;
+  --track-bg: #498d51;
+  --border-width: 2px;
+  --border-color: #101110;
+  background: var(--slider-bg);
+  width: var(--slider-width);
+  height: var(--slider-height);
+  border-radius: var(--slider-border-radius);
+  position: relative;
+}
+
+.slider.inactive {
+  --thumb-bg: #475788;
+}
+
+.slider.active {
+  --thumb-bg: #270707;
+}
+
+.slider .thumb {
+  background: var(--thumb-bg);
+  position: absolute;
+  top: calc(-1 * var(--thumb-height) / 2 + var(--slider-height) / 2);
+  left: calc(50% - var(--thumb-width) / 2);
+  width: var(--thumb-width);
+  height: var(--thumb-height);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--thumb-border-radius);
+  transition: background-color 0.33s;
+}
+
+.slider .track {
+  background: var(--track-bg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 0;
+}
+
+@media screen and (hover: hover) {
+  .slider .thumb:hover {
+    background: var(--thumb-hover);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .slider {
+    --slider-width: 250px;
+  }
+}

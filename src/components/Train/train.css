@@ -2,31 +2,23 @@
   --duration: 3s;
   display: grid;
   place-items: center;
-  height: 100%;
   flex-grow: 1;
-  /* min-height: 100vh; */
 }
 
-.train .anime {
-  animation: anime var(--duration) ease-in-out infinite;
+.train .item {
+  animation-duration: var(--duration);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
-@keyframes anime {
-  from {
-    /* background: yellow; */
-    transform: translateY(-100vh);
-  }
+.train .item.drop {
+  animation-name: drop;
+}
 
-  20% {
-    transform: translateY(0);
-  }
+.train .item.fade {
+  animation-name: fade;
+}
 
-  80% {
-    transform: translateY(0);
-  }
-
-  to {
-    /* background: blue; */
-    transform: translateY(100vh);
-  }
+.train .item.scale {
+  animation-name: scale;
 }

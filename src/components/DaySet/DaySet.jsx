@@ -11,14 +11,10 @@ export default function DaySet({ set, date }) {
   const theme = useContext(ThemeContext);
   const [seeingData, setSeeingData] = useState(false);
 
-  function close() {
-    setSeeingData(false);
-  }
-
   return (
     <div className={`day-set ${theme} ${set.type}`}>
       <SlideScreen
-        close={close}
+        close={() => setSeeingData(false)}
         shown={seeingData}
         closeButton={true}
         closeWhenClickingOutside={true}

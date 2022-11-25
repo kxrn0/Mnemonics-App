@@ -20,6 +20,7 @@ import Train from "./components/Train/Train";
 import Test from "./components/Test/Test";
 import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
 import "./style.css";
+import "./anime.css";
 
 import { update_set, create_set } from "./data";
 
@@ -37,25 +38,29 @@ function App() {
     words: {
       elements: 5,
       secsPerEl: 3,
-      animation: "none",
+      animation: "drop",
+      fontSize: 16,
     },
     images: {
       elements: 10,
       secsPerEl: 3,
       animation: "none",
       types: ["shimmer", "print"],
+      width: 100,
     },
     "numbers-decimal": {
       elements: 5,
       secsPerEl: 1,
-      animation: "none",
+      animation: "scale",
       digits: 1,
+      fontSize: 16,
     },
     "numbers-binary": {
       elements: 3,
       secsPerEl: 1,
-      animation: "none",
+      animation: "fade",
       digits: 3,
+      fontSize: 16,
     },
   });
 

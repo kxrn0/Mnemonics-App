@@ -38,7 +38,7 @@ export default function Train({ category, settings }) {
   return (
     <div className="train" style={{ "--duration": `${settings.secsPerEl}s` }}>
       {currentIndex < elements.length ? (
-        <p className="anime">{elements[currentIndex]}</p>
+        <p className={`item ${settings.animation}`}>{elements[currentIndex]}</p>
       ) : (
         <Link
           to="/test/"

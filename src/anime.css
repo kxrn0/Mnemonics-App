@@ -1,0 +1,53 @@
+@keyframes drop {
+  from {
+    transform: translateY(-100vh);
+  }
+
+  20% {
+    transform: translateY(0);
+  }
+
+  80% {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scale {
+  from {
+    transform: scale(0);
+  }
+
+  20% {
+    transform: scale(1);
+  }
+
+  80% {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(0);
+  }
+}
