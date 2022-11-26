@@ -1,39 +1,42 @@
+import { useRef, useState, useEffect } from "react";
 import { map } from "../../utilities/map";
 import "./slider.css";
 
-export default function Slider({ from, to, update_value }) {
+export default function Slider({ value, from, to, update_value }) {
+  const sliderRef = useRef(null);
+  const thumbRef = useRef(null);
+  const trackRef = useRef(null);
+  const [active, setActive] = useState(false);
+
   function move_thumb(pageX) {
-    const slider = document.querySelector(".slider");
-    const thumb = slider.querySelector(".thumb");
-    const sliderBox = slider.getBoundingClientRect();
+    const sliderBox = sliderRef.current.getBoundingClientRect();
 
     if (pageX < sliderBox.left) {
-      thumb.style.left = `${thumb.offsetWidth / 2}`;
-    } else if (sliderBox.right < pageX) thumb.style.rigth = 0;
+      thumbRef.current.style.left = `${thumbRef.current.offsetWidth / 2}`;
+    } else if (sliderBox.right < pageX) thumbRef.current.style.rigth = 0;
     else {
-      thumb.style.left = `${pageX - sliderBox.left - thumb.offsetWidth / 2}px`;
+      thumbRef.current.style.left = `${
+        pageX - sliderBox.left - thumbRef.current.offsetWidth / 2
+      }px`;
     }
   }
 
   function resize_track(pageX) {
-    const slider = document.querySelector(".slider");
-    const track = slider.querySelector(".track");
-    const sliderBox = slider.getBoundingClientRect();
+    const sliderBox = sliderRef.current.getBoundingClientRect();
     const percentage = `${(100 * (pageX - sliderBox.left)) / sliderBox.width}%`;
 
     if (pageX < sliderBox.left || sliderBox.right < pageX) return;
 
-    track.style.width = percentage;
+    trackRef.current.style.width = percentage;
   }
 
   function update() {
-    const slider = document.querySelector(".slider");
-    const thumb = slider.querySelector(".thumb");
-    const sliderBox = slider.getBoundingClientRect();
-    const thumbBox = thumb.getBoundingClientRect();
-    const length = thumbBox.left + thumb.offsetWidth / 2 - sliderBox.left;
+    const sliderBox = sliderRef.current.getBoundingClientRect();
+    const thumbBox = thumbRef.current.getBoundingClientRect();
+    const length =
+      thumbBox.left + thumbRef.current.offsetWidth / 2 - sliderBox.left;
 
-    update_value(map(length, 0, sliderBox.width, from, to));
+    update_value(Math.round(map(length, 0, sliderBox.width, from, to)));
   }
 
   function slide_thumb(event) {
@@ -48,14 +51,12 @@ export default function Slider({ from, to, update_value }) {
   }
 
   function handle_event(event) {
-    const slider = document.querySelector(".slider");
     const trigger =
       event.type === "touchstart"
         ? { move: "touchmove", end: "touchend" }
         : { move: "mousemove", end: "mouseup" };
 
-    slider.classList.toggle("active");
-    slider.classList.toggle("inactive");
+    setActive(true);
 
     document.addEventListener(trigger.move, slide_thumb);
 
@@ -64,8 +65,7 @@ export default function Slider({ from, to, update_value }) {
       () => {
         document.removeEventListener(trigger.move, slide_thumb);
 
-        slider.classList.toggle("active");
-        slider.classList.toggle("inactive");
+        setActive(false);
       },
       { once: true }
     );
@@ -77,13 +77,25 @@ export default function Slider({ from, to, update_value }) {
     update();
   }
 
+  useEffect(() => {
+    const per = 100 - ~~((100 * (to - value)) / (to - from));
+
+    trackRef.current.style.width = `${per}%`;
+    thumbRef.current.style.left = `${per}%`;
+  }, []);
+
   return (
-    <div className="slider inactive" onClick={handle_click}>
-      <span className="track"></span>
+    <div
+      className={`slider ${active ? "active" : "inactive"}`}
+      onClick={handle_click}
+      ref={sliderRef}
+    >
+      <span className="track" ref={trackRef}></span>
       <span
         className="thumb"
         onMouseDown={handle_event}
         onTouchStart={handle_event}
+        ref={thumbRef}
       ></span>
     </div>
   );

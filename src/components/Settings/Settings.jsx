@@ -4,20 +4,47 @@ import { useState, useContext, useEffect, useRef } from "react";
 import ThemeContext from "../../theme_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+import get_words from "../../utilities/get_words";
+import get_numbers from "../../utilities/get_numbers";
+import get_images from "../../utilities/get_images";
 
 import "./settings.css";
 
-export default function Settings({ category }) {
-  const [animeChoice, setAnimeChoice] = useState("drop");
+export default function Settings({ category, change_settings }) {
   const [animeIsPlaying, setAnimeIsPlaying] = useState(false);
   const theme = useContext(ThemeContext);
   const animes = ["drop", "scale", "fade"];
   const range =
-    category === "images" ? { from: 100, to: 200 } : { from: 16, to: 80 };
-  const [size, setSize] = useState(() => (category === "images" ? 150 : 20));
-  // const sample = category === "numbers-decimal" ? "10" :
-  // const byme = useRef((() => "shalom"));
-  
+    category.type === "images" ? { from: 100, to: 200 } : { from: 16, to: 80 };
+  // const [size, setSize] = useState(() =>
+  //   category.type === "images" ? 150 : 20
+  // );
+  const [sample, setSample] = useState(() =>
+    category.type === "numbers-decimal" || category.type === "numbers-binary"
+      ? get_numbers(1, category.digits, category.type)[0]
+      : category.type === "words"
+      ? get_words(1)[0]
+      : get_images(1, category.types)[0]
+  );
+  const measureRef = useRef(category === "images" ? "width" : "fontSize");
+  const [localSettings, setLocalSettings] = useState(() => {
+    return { ...category };
+  });
+
+  function update_value(event) {
+    setLocalSettings((prevSettings) => {
+      const value = Math.abs(~~Number(event.target.value));
+
+      if (event.target.name === "digits")
+        setSample(get_numbers(1, value ? value : 1, category.type)[0]);
+      return { ...prevSettings, [event.target.name]: value ? value : 1 };
+    });
+  }
+
+  function save_settings(event) {
+    event.preventDefault();
+    change_settings(localSettings);
+  }
 
   useEffect(() => {
     function fun(event) {
@@ -32,29 +59,42 @@ export default function Settings({ category }) {
   }, []);
 
   return (
-    <form className={`settings ${theme}`}>
-      <button type="button" onClick={() => console.log(byme)}>
-        shalom
-      </button>
+    <form className={`settings ${theme}`} onSubmit={save_settings}>
       <label htmlFor="elements" className="based">
         <span>Elements : </span>
-        <input type="number" />
+        <input
+          type="number"
+          name="elements"
+          value={localSettings.elements}
+          onChange={update_value}
+        />
       </label>
       <label htmlFor="secs" className="based">
         <span>Seconds per Element : </span>
-        <input type="number" />
+        <input
+          type="number"
+          name="secsPerEl"
+          value={localSettings.secsPerEl}
+          onChange={update_value}
+        />
       </label>
-      {category === "numbers-decimal" || category === "numbers-binary" ? (
+      {category.type === "numbers-decimal" ||
+      category.type === "numbers-binary" ? (
         <label htmlFor="digits" className="based">
           <span>Digits : </span>
-          <input type="number" />
+          <input
+            type="number"
+            name="digits"
+            value={localSettings.digits}
+            onChange={update_value}
+          />
         </label>
       ) : null}
       <div className="selector">
         <p>Animation : </p>
         <div className="container">
           <div className="anime">
-            <label htmlFor="animation-name">{animeChoice}</label>
+            <label htmlFor="animation-name">{localSettings.animation}</label>
             <div className="toggle-container">
               <input
                 id="animation-name"
@@ -73,8 +113,13 @@ export default function Settings({ category }) {
                   id={`anime-${anime}`}
                   name="anime-choice"
                   value={anime}
-                  checked={animeChoice === anime}
-                  onChange={(event) => setAnimeChoice(event.target.value)}
+                  checked={localSettings.animation === anime}
+                  onChange={(event) =>
+                    setLocalSettings((prevSettings) => ({
+                      ...prevSettings,
+                      animation: event.target.value,
+                    }))
+                  }
                 />
                 <span>{anime}</span>
               </label>
@@ -83,14 +128,34 @@ export default function Settings({ category }) {
         </div>
       </div>
       <div className="size">
-        <p>Size</p>
+        <p>Size : </p>
         <Slider
+          value={
+            category.type === "images"
+              ? localSettings.width
+              : localSettings.fontSize
+          }
           from={range.from}
           to={range.to}
-          update_value={(value) => setSize(value)}
+          update_value={(value) =>
+            setLocalSettings((prevSettings) => ({
+              ...prevSettings,
+              [measureRef.current]: value,
+            }))
+          }
         />
       </div>
-      <div className="screen"></div>
+      <div
+        className="screen"
+        style={{ "--duration": `${localSettings.secsPerEl}s` }}
+      >
+        <div
+          className={`content ${localSettings.animation}`}
+          style={{ fontSize: localSettings[measureRef.current] }}
+        >
+          {sample}
+        </div>
+      </div>
       <button>Save</button>
     </form>
   );

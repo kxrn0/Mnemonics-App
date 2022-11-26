@@ -7,19 +7,19 @@ import get_images from "../../utilities/get_images";
 
 import "./train.css";
 
-export default function Train({ category, settings }) {
+export default function Train({ category }) {
   const params = useLocation().state;
   const [elements, _] = useState(() => {
     if (!params.newSet) return params.data;
 
-    switch (category) {
+    switch (category.type) {
       case "words":
-        return get_words(settings.elements);
+        return get_words(category.elements);
       case "images":
-        return get_images(settings.elements, settings.types);
+        return get_images(category.elements, category.types);
       case "numbers-decimal":
       case "numbers-binary":
-        return get_numbers(settings.elements, settings.digits, category);
+        return get_numbers(category.elements, category.digits, category.type);
       default:
         throw new Error("Error! unknown type of elements!");
     }
@@ -30,19 +30,23 @@ export default function Train({ category, settings }) {
     const intervalId = setInterval(() => {
       if (currentIndex < elements.length)
         setCurrentIndex((prevIndex) => prevIndex + 1);
-    }, settings.secsPerEl * 1000);
+    }, category.secsPerEl * 1000);
 
     return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <div className="train" style={{ "--duration": `${settings.secsPerEl}s` }}>
+    <div className="train" style={{ "--duration": `${category.secsPerEl}s` }}>
       {currentIndex < elements.length ? (
-        <p className={`item ${settings.animation}`}>{elements[currentIndex]}</p>
+        <p className={`item ${category.animation}`}>{elements[currentIndex]}</p>
       ) : (
         <Link
           to="/test/"
-          state={{ elements, category, id: params.newSet ? null : params.id }}
+          state={{
+            elements,
+            category: category.type,
+            id: params.newSet ? null : params.id,
+          }}
         >
           Check
         </Link>

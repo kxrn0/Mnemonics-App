@@ -15,44 +15,38 @@ export default function Category({
   process,
   PreviewComponent,
   set_rotten_days,
+  save_settings,
 }) {
   const theme = useContext(ThemeContext);
   const [seeingSettings, setSeeingSettings] = useState(false);
-  // const [settingsComponent, setSettingsComponent] = useState("");
 
   function actual_process(set, date) {
-    if (set.type !== category) return null;
+    if (set.type !== category.type) return null;
     return process(set, date);
   }
 
-  // useEffect(() => {
-  //   function choose_component() {
-  //     switch (category) {
-  //       case "words":
-  //         return 0;
-  //     }
-  //   }
-
-  //   setSettingsComponent(choose_component());
-  // }, []);
+  function change_settings(settings) {
+    save_settings(category.type, settings);
+    setSeeingSettings(false);
+  }
 
   return (
-    <div className={`category ${category} ${theme}`}>
+    <div className={`category ${category.type} ${theme}`}>
       <SlideScreen
         close={() => setSeeingSettings(false)}
         shown={seeingSettings}
         closeButton={true}
         closeWhenClickingOutside={true}
       >
-        {/* {settingsComponent} */}
-        {/* shalom */}
-        {seeingSettings ? <Settings category={category} /> : null}
+        {seeingSettings ? (
+          <Settings category={category} change_settings={change_settings} />
+        ) : null}
       </SlideScreen>
       <h1 className="category-name">
-        {category.split("-").reverse().join(" ")}
+        {category.type.split("-").reverse().join(" ")}
       </h1>
       <div className="category-controls">
-        <Link to={`/train/${category}/grounds`} state={{ newSet: true }}>
+        <Link to={`/train/${category.type}/grounds`} state={{ newSet: true }}>
           <button className="train">Train</button>
         </Link>
         <button className="settings" onClick={() => setSeeingSettings(true)}>
@@ -65,9 +59,9 @@ export default function Category({
         PreviewComponent={PreviewComponent}
         set_rotten_days={set_rotten_days}
       />
-      <Graph sets={sets} category={category} />
+      <Graph sets={sets} category={category.type} />
       {sets.map((set) =>
-        set.type === category ? (
+        set.type === category.type ? (
           <DaySet key={set.id} set={set} date="all" />
         ) : null
       )}

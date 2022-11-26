@@ -28,41 +28,39 @@ function App() {
   const [theme, setTheme] = useState("light");
   const [data, setData] = useState(() => JSON.parse(JSON.stringify(memData)));
   const [rottenDays, setRottenDays] = useState([]);
-  const categoriesRef = useRef([
-    "words",
-    "images",
-    "numbers-decimal",
-    "numbers-binary",
-  ]);
-  const settingsRef = useRef({
-    words: {
+  const [cats, setCats] = useState(() => [
+    {
+      type: "words",
       elements: 5,
       secsPerEl: 3,
       animation: "drop",
       fontSize: 16,
     },
-    images: {
+    {
+      type: "images",
       elements: 10,
       secsPerEl: 3,
       animation: "none",
       types: ["shimmer", "print"],
-      width: 100,
+      width: 175,
     },
-    "numbers-decimal": {
+    {
+      type: "numbers-decimal",
       elements: 5,
       secsPerEl: 1,
       animation: "scale",
       digits: 1,
-      fontSize: 16,
+      fontSize: 32,
     },
-    "numbers-binary": {
+    {
+      type: "numbers-binary",
       elements: 3,
       secsPerEl: 1,
       animation: "fade",
       digits: 3,
-      fontSize: 16,
+      fontSize: 48,
     },
-  });
+  ]);
 
   function set_rotten_days(days) {
     setRottenDays(days);
@@ -91,6 +89,12 @@ function App() {
 
   function change_theme(event) {
     setTheme(event.target.dataset.theme);
+  }
+
+  function change_settings(type, newCat) {
+    setCats((prevCats) =>
+      prevCats.map((cat) => (cat.type !== type ? cat : newCat))
+    );
   }
 
   function update(review, id) {
@@ -165,10 +169,10 @@ function App() {
                   element={<DayPage sets={data} date={day} />}
                 />
               ))}
-              {categoriesRef.current.map((cat) => (
+              {cats.map((cat) => (
                 <Route
-                  key={cat}
-                  path={`/train/${cat}`}
+                  key={cat.type}
+                  path={`/train/${cat.type}`}
                   element={
                     <Category
                       category={cat}
@@ -176,17 +180,16 @@ function App() {
                       process={process}
                       PreviewComponent={ReviewPreview}
                       set_rotten_days={set_rotten_days}
+                      save_settings={change_settings}
                     />
                   }
                 />
               ))}
-              {categoriesRef.current.map((cat) => (
+              {cats.map((cat) => (
                 <Route
-                  key={cat}
-                  path={`/train/${cat}/grounds`}
-                  element={
-                    <Train category={cat} settings={settingsRef.current[cat]} />
-                  }
+                  key={cat.type}
+                  path={`/train/${cat.type}/grounds`}
+                  element={<Train category={cat} />}
                 />
               ))}
               <Route
