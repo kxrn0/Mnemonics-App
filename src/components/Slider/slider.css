@@ -1,28 +1,73 @@
+.slider.light {
+  --bdrd: 0;
+  --slider-bg: black;
+  --track-bg: rgb(27, 198, 92);
+  --thumb-bg: rgb(150, 255, 176);
+  --thumb-hover: rgb(149, 255, 0);
+  --box-shadow: none;
+  --thumb-shadow: none;
+}
+
+.slider.dark {
+  --bdrd: 0;
+  --slider-bg: gray;
+  --track-bg: white;
+  --thumb-bg: rgb(250, 250, 242);
+  --thumb-hover: rgb(221, 14, 14);
+  --box-shadow: none;
+  --thumb-shadow: none;
+}
+
+.slider.neom {
+  --bdrd: 0.5rem;
+  --slider-bg: rgb(229, 232, 241);
+  --track-bg: rgb(88, 255, 130);
+  --thumb-bg: rgb(215, 215, 255);
+  --thumb-hover: rgb(128, 128, 214);
+  --box-shadow: 5px 5px 10px 0 rgba(14, 70, 13, 0.5),
+    -5px -5px 10px 0 rgb(255, 255, 255, 0.75);
+  --thumb-shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.5),
+    3px 3px 3px 0 rgba(45, 62, 75, 0.5) inset;
+}
+
+.slider.light.inactive {
+  --thumb-bg: black;
+}
+
+.slider.dark.inactive {
+  --thumb-bg: rgb(206, 159, 159);
+}
+
+.slider.neom.inactive {
+  --thumb-bg: rgb(69, 47, 47);
+}
+
 .slider {
   --slider-height: 8px;
   --slider-width: 250px;
-  --slider-bg: #18171f;
+  /* --slider-bg: #18171f; */
   --thumb-height: 28px;
   --thumb-width: 28px;
   --thumb-border-radius: 50%;
-  --thumb-hover: #18171f;
-  --track-bg: #498d51;
+  /* --thumb-hover: #18171f; */
+  /* --track-bg: #498d51; */
   --border-width: 2px;
-  --border-color: #101110;
+  --border-color: rgb(50, 58, 50);
   background: var(--slider-bg);
   width: var(--slider-width);
   height: var(--slider-height);
   border-radius: var(--slider-border-radius);
   position: relative;
+  border-radius: var(--bdrd);
 }
 
-.slider.inactive {
+/* .slider.inactive {
   --thumb-bg: #475788;
 }
 
 .slider.active {
   --thumb-bg: #270707;
-}
+} */
 
 .slider .thumb {
   background: var(--thumb-bg);
@@ -34,6 +79,8 @@
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--thumb-border-radius);
   transition: background-color 0.33s;
+  /* box-shadow: var(--box-shadow); */
+  box-shadow: var(--thumb-shadow);
 }
 
 .slider .track {
@@ -43,17 +90,19 @@
   left: 0;
   width: 50%;
   height: 100%;
+  border-radius: var(--bdrd);
+  box-shadow: var(--box-shadow);
   z-index: 0;
 }
 
 @media screen and (hover: hover) {
-  .slider .thumb:hover {
+  .slider.inactive .thumb:hover {
     background: var(--thumb-hover);
   }
 }
-
+/* 
 @media screen and (max-width: 500px) {
   .slider {
     --slider-width: 250px;
   }
-}
+} */

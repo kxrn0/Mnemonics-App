@@ -60,18 +60,20 @@ export default function Settings({ category, change_settings }) {
 
   return (
     <form className={`settings ${theme}`} onSubmit={save_settings}>
-      <label htmlFor="elements" className="based">
+      <label htmlFor="elements" className="based label-element">
         <span>Elements : </span>
         <input
+          id="elements"
           type="number"
           name="elements"
           value={localSettings.elements}
           onChange={update_value}
         />
       </label>
-      <label htmlFor="secs" className="based">
+      <label htmlFor="secs" className="based label-element">
         <span>Seconds per Element : </span>
         <input
+          id="secs"
           type="number"
           name="secsPerEl"
           value={localSettings.secsPerEl}
@@ -80,9 +82,10 @@ export default function Settings({ category, change_settings }) {
       </label>
       {category.type === "numbers-decimal" ||
       category.type === "numbers-binary" ? (
-        <label htmlFor="digits" className="based">
+        <label htmlFor="digits" className="based label-element">
           <span>Digits : </span>
           <input
+            id="digits"
             type="number"
             name="digits"
             value={localSettings.digits}
@@ -91,7 +94,7 @@ export default function Settings({ category, change_settings }) {
         </label>
       ) : null}
       <div className="selector">
-        <p>Animation : </p>
+        <p className="label-element">Animation : </p>
         <div className="container">
           <div className="anime">
             <label htmlFor="animation-name">{localSettings.animation}</label>
@@ -121,14 +124,14 @@ export default function Settings({ category, change_settings }) {
                     }))
                   }
                 />
-                <span>{anime}</span>
+                <span className="label-element">{anime}</span>
               </label>
             ))}
           </div>
         </div>
       </div>
       <div className="size">
-        <p>Size : </p>
+        <p className="label-element">Size : </p>
         <Slider
           value={
             category.type === "images"
@@ -150,13 +153,13 @@ export default function Settings({ category, change_settings }) {
         style={{ "--duration": `${localSettings.secsPerEl}s` }}
       >
         <div
-          className={`content ${localSettings.animation}`}
+          className={`content ${localSettings.animation} label-element`}
           style={{ fontSize: localSettings[measureRef.current] }}
         >
           {sample}
         </div>
       </div>
-      <button>Save</button>
+      <button className="submit">Save</button>
     </form>
   );
 }

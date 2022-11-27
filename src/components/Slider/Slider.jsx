@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
+import ThemeContext from "../../theme_context";
 import { map } from "../../utilities/map";
 import "./slider.css";
 
@@ -7,6 +8,7 @@ export default function Slider({ value, from, to, update_value }) {
   const thumbRef = useRef(null);
   const trackRef = useRef(null);
   const [active, setActive] = useState(false);
+  const theme = useContext(ThemeContext);
 
   function move_thumb(pageX) {
     const sliderBox = sliderRef.current.getBoundingClientRect();
@@ -86,7 +88,7 @@ export default function Slider({ value, from, to, update_value }) {
 
   return (
     <div
-      className={`slider ${active ? "active" : "inactive"}`}
+      className={`slider ${active ? "active" : "inactive"} ${theme}`}
       onClick={handle_click}
       ref={sliderRef}
     >
