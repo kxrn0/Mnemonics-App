@@ -9,7 +9,6 @@ import ThemeContext from "../../theme_context";
 import "./graph.css";
 
 export default function Graph({ sets, category }) {
-  // const [presentDay, setPresentDay] = useState(new Date());
   const [currentTip, setCurrentTip] = useState("");
   const [presentTime, setPresentTime] = useState(() => {
     const today = new Date();
@@ -43,6 +42,20 @@ export default function Graph({ sets, category }) {
 
       return { year, month, stringDate };
     });
+  }
+
+  function show_tip(id, event) {
+    const point = event.target;
+    const tip = point.querySelector(".data-date-score");
+
+    setTimeout(() => {
+      const box = tip.getBoundingClientRect();
+
+      if (box.left + box.width > window.innerWidth)
+        tip.style.left = `-${box.width + box.x - window.innerWidth}px`;
+    }, 33);
+
+    setCurrentTip(id);
   }
 
   useEffect(() => {
@@ -126,7 +139,7 @@ export default function Graph({ sets, category }) {
                 return (
                   <span
                     key={point.day}
-                    onClick={() => setCurrentTip(point.day)}
+                    onClick={(event) => show_tip(point.day, event)}
                     className={`graph-point ${
                       currentTip === point.day ? "active" : ""
                     }`}

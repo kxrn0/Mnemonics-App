@@ -64,6 +64,7 @@ export default function Settings({ category, change_settings }) {
         <span>Elements : </span>
         <input
           id="elements"
+          required
           type="number"
           name="elements"
           value={localSettings.elements}
@@ -74,6 +75,7 @@ export default function Settings({ category, change_settings }) {
         <span>Seconds per Element : </span>
         <input
           id="secs"
+          required
           type="number"
           name="secsPerEl"
           value={localSettings.secsPerEl}
@@ -86,6 +88,7 @@ export default function Settings({ category, change_settings }) {
           <span>Digits : </span>
           <input
             id="digits"
+            required
             type="number"
             name="digits"
             value={localSettings.digits}

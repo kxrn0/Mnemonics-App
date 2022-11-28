@@ -51,7 +51,7 @@ const memData = [
         ],
       },
       {
-        date: "Tue Nov 01 2022",
+        date: "Fri Nov 04 2022",
         time: "09:43",
         id: "bye",
         duration: 126,
@@ -71,7 +71,7 @@ const memData = [
         ],
       },
       {
-        date: "Wed Nov 02 2022",
+        date: "Sat Nov 05 2022",
         time: "08:12",
         id: "byme",
         duration: 154,

@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import find_dates from "../../utilities/find_first_day";
-import "./calendar.css";
 import ThemeContext from "../../theme_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,6 +7,8 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import "./calendar.css";
+import { nanoid } from "nanoid";
 
 export default function Calendar({
   data,
@@ -17,7 +18,7 @@ export default function Calendar({
 }) {
   const theme = useContext(ThemeContext);
   const [days, setDays] = useState([]);
-  const [presentDay, setPresentDay] = useState(() => new Date().toDateString());
+  const presentDay = useRef(new Date().toDateString());
   const [presentTime, setPresentTime] = useState(() => {
     const today = new Date();
     const parts = today.toDateString().split(" ");
@@ -42,7 +43,7 @@ export default function Calendar({
 
       components = components.filter((cmp) => cmp !== null);
 
-      return { day, components, date: day.split(" ")[2] };
+      return { day, components, date: day.split(" ")[2], key: nanoid() };
     });
 
     set_rotten_days(
@@ -72,9 +73,36 @@ export default function Calendar({
     });
   }
 
-  function activate_day(day) {
+  function activate_day(day, event) {
     if (activeDay === day) setActiveDay("");
-    else setActiveDay(day);
+    else {
+      const parent = event.target.parentElement;
+      const toolTip = parent.querySelector(".tooltip");
+      const tip = toolTip.querySelector(".tip");
+
+      setTimeout(() => {
+        const boxTip = toolTip.getBoundingClientRect();
+        const parentBox = parent.getBoundingClientRect();
+
+        if (boxTip.x < 0) {
+          toolTip.style.left = `-${parentBox.x}px`;
+          tip.style.left = `${parentBox.x}px`;
+        }
+        if (boxTip.x + boxTip.width > window.innerWidth) {
+          const offset = boxTip.width + parentBox.x - window.innerWidth;
+
+          toolTip.style.left = `-${offset}px`;
+          tip.style.left = `${offset}px`;
+        }
+        if (boxTip.y + boxTip.height > window.innerHeight) {
+          toolTip.style.top = `${-boxTip.height - 16}px`;
+          tip.style.transform = "rotate(180deg)";
+          tip.style.top = `${boxTip.height}px`;
+        }
+      }, 333);
+
+      setActiveDay(day);
+    }
   }
 
   useEffect(init, [presentTime]);
@@ -121,14 +149,16 @@ export default function Calendar({
 
           return (
             <div
-              key={day.day}
+              key={day.key}
               className={`day ${isABrightDay ? "fullfilled" : "unfullfilled"} ${
-                presentDay === day.day ? "today" : ""
+                presentDay.current === day.day ? "today" : ""
               }`}
             >
               <div
                 className="cell-body"
-                onClick={isABrightDay ? () => activate_day(day.day) : null}
+                onClick={
+                  isABrightDay ? (event) => activate_day(day.day, event) : null
+                }
               >
                 {day.date}
               </div>

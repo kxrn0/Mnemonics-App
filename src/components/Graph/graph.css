@@ -79,8 +79,8 @@
   width: max-content;
   padding: 0.5rem;
   border-radius: 0.25rem;
-  z-index: 1;
   top: 10px;
+  z-index: 1;
 }
 
 .graph .points span.active {
