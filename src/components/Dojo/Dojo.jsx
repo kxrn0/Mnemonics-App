@@ -18,7 +18,7 @@ export default function Dojo() {
             </Link>
             <Link to="/train/images" id="images">
                 <img src={images} alt="images" />
-                <p className="category">Images</p>
+                <p className="category">Abstract Images</p>
             </Link>
             <Link to="/train/numbers-decimal" id="numbers-decimal">
                 <img src={decimals} alt="decimal numbers" />

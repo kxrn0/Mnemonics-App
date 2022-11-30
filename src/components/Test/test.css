@@ -1,10 +1,35 @@
+.test.light {
+  --color: black;
+  --button-bg: rgb(74, 234, 82);
+  --shadow: none;
+}
+
+.test.dark {
+  --color: azure;
+  --button-bg: rgb(110, 215, 110);
+  --shadow: none;
+}
+
+.test.neom {
+  --color: black;
+  --button-bg: rgb(97, 225, 251);
+  --shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.25),
+    -5px -5px 10px 0 rgb(255, 255, 255, 0.5);
+}
+
 .test {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
 .test .container {
+  color: var(--color);
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -20,6 +45,7 @@
 
 .test .container input[type="text"] {
   background: transparent;
+  color: var(--color);
   font-size: 1.5rem;
   border: none;
   border-bottom: 1px solid gray;
@@ -29,4 +55,13 @@
 
 .test .container input[type="text"]:focus {
   border-bottom: 2px solid black;
+}
+
+.test .check-button {
+  background: var(--button-bg);
+  box-shadow: var(--shadow);
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
 }

@@ -22,6 +22,8 @@ import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
 import "./style.css";
 import "./anime.css";
 
+import get_images from "./utilities/get_images";
+
 import { update_set, create_set } from "./data";
 
 function App() {
@@ -125,8 +127,23 @@ function App() {
     setData((prevData) => [...prevData, set]);
   }
 
+  const [image, setImage] = useState("");
+  const inputRef = useRef(null);
+
+  async function load_image() {
+    const index = Number(inputRef.current.value);
+    const file = await get_images(index);
+
+    setImage(URL.createObjectURL(file));
+  }
+
   return (
     <div className={`App ${theme}`}>
+      <div className="byme">
+        <input type="number" ref={inputRef} />
+        <button onClick={load_image}>go</button>
+        <img src={image} alt="by me" />
+      </div>
       <BrowserRouter>
         <ScrollWrapper>
           <ThemeContext.Provider value={theme}>

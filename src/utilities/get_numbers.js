@@ -14,5 +14,6 @@ export default function get_numbers(items, digits, type) {
       number += chars[~~(chars.length * Math.random())];
     numbers.push(number);
   }
+  // return new Promise((resolve, _) => setTimeout(() => resolve(numbers), 5000));
   return numbers;
 }

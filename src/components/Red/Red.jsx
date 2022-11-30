@@ -3,8 +3,8 @@ import Loading from "../Loading/Loading";
 import ThemeContext from "../../theme_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
-import "./red.css";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import "./red.css";
 
 export default function Red() {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,7 @@ export default function Red() {
 
     try {
       const req = await fetch(
-        `https://www.reddit.com/r/${sub}/top.json?t=${interval}&limit=10`
+        `https://www.reddit.com/r/${sub}/top.json?t=${interval}&limit=100`
       );
       const res = await req.json();
       const child =

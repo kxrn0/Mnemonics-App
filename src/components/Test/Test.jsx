@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import ThemeContext from "../../theme_context";
 
 import "./test.css";
 
@@ -10,6 +11,7 @@ export default function Test({ update_set, create_set }) {
   );
   const beginningOfTime = useRef(new Date());
   const navigate = useNavigate();
+  const theme = useContext(ThemeContext);
 
   function handle_change(event) {
     const value = event.target.value;
@@ -54,7 +56,7 @@ export default function Test({ update_set, create_set }) {
   }
 
   return (
-    <div className="test">
+    <div className={`test ${theme}`}>
       {data.category === "images" ? (
         <div className="images container"></div>
       ) : (
@@ -74,11 +76,11 @@ export default function Test({ update_set, create_set }) {
               </li>
             ))}
           </ul>
-          <button className="check-button" onClick={check}>
-            Check
-          </button>
         </div>
       )}
+      <button className="check-button" onClick={check}>
+        Check
+      </button>
     </div>
   );
 }
