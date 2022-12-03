@@ -19,12 +19,9 @@ import logo from "./assets/app_logo.svg";
 import Train from "./components/Train/Train";
 import Test from "./components/Test/Test";
 import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
+import { update_set, create_set } from "./data";
 import "./style.css";
 import "./anime.css";
-
-import get_images from "./utilities/get_images";
-
-import { update_set, create_set } from "./data";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -42,9 +39,9 @@ function App() {
       type: "images",
       elements: 10,
       secsPerEl: 3,
-      animation: "none",
-      types: ["shimmer", "print"],
-      width: 175,
+      animation: "drop",
+      types: ["ten_print", "circle_packing", "shapes", "water_color"],
+      width: 300,
     },
     {
       type: "numbers-decimal",
@@ -127,23 +124,8 @@ function App() {
     setData((prevData) => [...prevData, set]);
   }
 
-  const [image, setImage] = useState("");
-  const inputRef = useRef(null);
-
-  async function load_image() {
-    const index = Number(inputRef.current.value);
-    const file = await get_images(index);
-
-    setImage(URL.createObjectURL(file));
-  }
-
   return (
     <div className={`App ${theme}`}>
-      <div className="byme">
-        <input type="number" ref={inputRef} />
-        <button onClick={load_image}>go</button>
-        <img src={image} alt="by me" />
-      </div>
       <BrowserRouter>
         <ScrollWrapper>
           <ThemeContext.Provider value={theme}>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Loading from "../Loading/Loading";
 import ThemeContext from "../../theme_context";
 import get_words from "../../utilities/get_words";
 import get_numbers from "../../utilities/get_numbers";
@@ -25,14 +26,11 @@ export default function Train({ category }) {
           break;
         case "images":
           data = await get_images(category.elements, category.types);
+          data = data.map((file) => ({ file, src: URL.createObjectURL(file) }));
           break;
         case "numbers-decimal":
         case "numbers-binary":
-          data = get_numbers(
-            category.elements,
-            category.digits,
-            category.type
-          );
+          data = get_numbers(category.elements, category.digits, category.type);
           break;
         default:
           throw new Error("Error! unknown type of elements!");
@@ -57,16 +55,24 @@ export default function Train({ category }) {
       className={`train ${theme}`}
       style={{ "--duration": `${category.secsPerEl}s` }}
     >
-      <button onClick={() => console.log(currentIndex)}>shalom</button>
       {elements.length ? (
         <div className="content">
           {currentIndex < elements.length ? (
-            <p
-              className={`item ${category.animation}`}
-              style={{ fontSize: `${category.fontSize}px` }}
-            >
-              {elements[currentIndex]}
-            </p>
+            category.type === "images" ? (
+              <img
+                className={`item ${category.animation}`}
+                style={{ width: category.width }}
+                src={elements[currentIndex].src}
+                alt="image"
+              />
+            ) : (
+              <p
+                className={`item ${category.animation}`}
+                style={{ fontSize: `${category.fontSize}px` }}
+              >
+                {elements[currentIndex]}
+              </p>
+            )
           ) : (
             <Link
               to="/test/"
@@ -81,7 +87,7 @@ export default function Train({ category }) {
           )}
         </div>
       ) : (
-        <p>loading...</p>
+        <Loading />
       )}
     </div>
   );

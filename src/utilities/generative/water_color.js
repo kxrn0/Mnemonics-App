@@ -1,7 +1,6 @@
 import { nanoid } from "nanoid";
 import create_polygon from "../create_polygon";
 import deform_polygon from "../deform_polygon";
-import draw_texture from "./texture";
 import random from "../random";
 
 function paint(canvas, center, radius, color) {
@@ -12,7 +11,7 @@ function paint(canvas, center, radius, color) {
       y: 0,
     },
     radius,
-    150
+    50
   );
 
   deform_polygon(brush, 50);
@@ -43,8 +42,6 @@ export default function water_color(width, height) {
     colors.push(
       `rgb(${~~random(0, 255)}, ${~~random(0, 255)}, ${~~random(0, 255)}, .05)`
     );
-
-//   draw_texture(canvas);
 
   for (let color of colors) {
     paint(

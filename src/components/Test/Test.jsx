@@ -1,8 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import ThemeContext from "../../theme_context";
+import random from "../../utilities/random";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose, faExpand, faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import "./test.css";
+import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 export default function Test({ update_set, create_set }) {
   const data = useLocation().state;
@@ -55,10 +59,92 @@ export default function Test({ update_set, create_set }) {
     navigate(`/train/${data.category}`);
   }
 
+  function fill_slot(src) {
+    setElementsOfMan((prevElements) =>
+      prevElements.map((element, elIndex) =>
+        currentSlot === elIndex ? src : element
+      )
+    );
+    setCurrentSlot((prevSlot) => {
+      const nextIndex = elementsOfMan.findIndex(
+        (element, index) => element === "" && index > prevSlot
+      );
+
+      if (~nextIndex) return nextIndex;
+      else return elementsOfMan.findIndex((element) => element === "");
+    });
+  }
+
+  function remove_image(index) {
+    setElementsOfMan((prevElements) => {
+      if (prevElements.every((element) => element !== ""))
+        setCurrentSlot(index);
+
+      return prevElements.map((element, elIndex) =>
+        elIndex === index ? "" : element
+      );
+    });
+  }
+
+  const [currentSlot, setCurrentSlot] = useState(0);
+  const [randomized, setRandomized] = useState([]);
+
+  useEffect(() => {
+    setRandomized(data.elements.sort(() => random(-1, 1)));
+  }, []);
+
   return (
     <div className={`test ${theme}`}>
       {data.category === "images" ? (
-        <div className="images container"></div>
+        <div className="images">
+          <ul className="slots">
+            {elementsOfMan.map((element, index) => (
+              <li key={index}>
+                <p>{index + 1}.-</p>
+                {element === "" ? (
+                  <div
+                    className={`slot ${currentSlot === index ? "active" : ""}`}
+                    onClick={() => setCurrentSlot(index)}
+                  ></div>
+                ) : (
+                  <div className="image">
+                    <img src={element} />
+                    <button onClick={() => remove_image(index)}>
+                      <FontAwesomeIcon icon={faClose} />
+                    </button>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+          <div className="bottom-text">
+            <ul className="images-to-select">
+              {randomized.map((element, index) => (
+                <li key={index}>
+                  {!elementsOfMan.includes(element.src) ? (
+                    <div className="active-image">
+                      <img src={element.src} />
+                      <button
+                        className="add"
+                        onClick={() => fill_slot(element.src)}
+                      >
+                        <FontAwesomeIcon icon={faCircleArrowUp} />
+                      </button>
+                      <button className="expand">
+                        <FontAwesomeIcon icon={faExpand} />
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="byme"></span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <button className="check-button" onClick={() => console.log("hi")}>
+              Check
+            </button>
+          </div>
+        </div>
       ) : (
         <div className="everything-else container">
           <ul>
@@ -76,11 +162,11 @@ export default function Test({ update_set, create_set }) {
               </li>
             ))}
           </ul>
+          <button className="check-button" onClick={check}>
+            Check
+          </button>
         </div>
       )}
-      <button className="check-button" onClick={check}>
-        Check
-      </button>
     </div>
   );
 }

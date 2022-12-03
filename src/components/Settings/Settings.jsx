@@ -3,11 +3,18 @@ import Drawer from "../Drawer/Drawer";
 import { useState, useContext, useEffect, useRef } from "react";
 import ThemeContext from "../../theme_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleChevronDown,
+  faCircleChevronRight,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import get_words from "../../utilities/get_words";
 import get_numbers from "../../utilities/get_numbers";
-import get_images from "../../utilities/get_images";
-
+import random from "../../utilities/random";
+import tenPrintSample from "../../assets/smap/ten_print_sample.png";
+import waterColorSample from "../../assets/smap/water_color_sample.png";
+import shapesSample from "../../assets/smap/shapes_sample.png";
+import circlePackingSample from "../../assets/smap/circle_packing_sample.png";
 import "./settings.css";
 
 export default function Settings({ category, change_settings }) {
@@ -15,21 +22,49 @@ export default function Settings({ category, change_settings }) {
   const theme = useContext(ThemeContext);
   const animes = ["drop", "scale", "fade"];
   const range =
-    category.type === "images" ? { from: 100, to: 200 } : { from: 16, to: 80 };
-  // const [size, setSize] = useState(() =>
-  //   category.type === "images" ? 150 : 20
-  // );
+    category.type === "images" ? { from: 100, to: 300 } : { from: 16, to: 80 };
+  const sampleImages = useRef([
+    { src: waterColorSample, type: "water_color" },
+    { src: tenPrintSample, type: "ten_print" },
+    { src: shapesSample, type: "shapes" },
+    { src: circlePackingSample, type: "circle_packing" },
+  ]);
   const [sample, setSample] = useState(() =>
-    category.type === "numbers-decimal" || category.type === "numbers-binary"
-      ? get_numbers(1, category.digits, category.type)[0]
-      : category.type === "words"
-      ? get_words(1)[0]
-      : get_images(1, category.types)[0]
+    category.type === "numbers-decimal" ||
+    category.type === "numbers-binary" ? (
+      get_numbers(1, category.digits, category.type)[0]
+    ) : category.type === "words" ? (
+      get_words(1)[0]
+    ) : (
+      <img
+        src={sampleImages.current[~~random(0, sampleImages.current.length)].src}
+        alt="sample image"
+      />
+    )
   );
   const measureRef = useRef(category === "images" ? "width" : "fontSize");
   const [localSettings, setLocalSettings] = useState(() => {
-    return { ...category };
+    const settings = { ...category };
+
+    if (category.type === "images") settings.types = [...category.types];
+
+    return settings;
   });
+
+  function select_types(event) {
+    const type = event.target.dataset.type;
+
+    if (event.target.checked)
+      setLocalSettings((prevSettings) => ({
+        ...prevSettings,
+        types: [...prevSettings.types, type],
+      }));
+    else if (localSettings.types.length > 1)
+      setLocalSettings((prevSettings) => ({
+        ...prevSettings,
+        types: [...prevSettings.types.filter((other) => other !== type)],
+      }));
+  }
 
   function update_value(event) {
     setLocalSettings((prevSettings) => {
@@ -108,7 +143,7 @@ export default function Settings({ category, change_settings }) {
                 checked={animeIsPlaying}
                 onChange={() => setAnimeIsPlaying((prevAnime) => !prevAnime)}
               />
-              <FontAwesomeIcon icon={faChevronCircleRight} />
+              <FontAwesomeIcon icon={faCircleChevronRight} />
             </div>
           </div>
           <div className={`choices ${animeIsPlaying ? "active" : "inactive"}`}>
@@ -133,6 +168,46 @@ export default function Settings({ category, change_settings }) {
           </div>
         </div>
       </div>
+      {category.type === "images" ? (
+        <Drawer
+          top={<p>Types</p>}
+          bottom={
+            <ul>
+              {sampleImages.current.map((image) => (
+                <li key={image.type}>
+                  <label htmlFor={`${image.type}-sample`}>
+                    <div className="image">
+                      <img
+                        src={image.src}
+                        alt={image.type}
+                        width="100"
+                        height="100"
+                      />
+                      <input
+                        id={`${image.type}-sample`}
+                        type="checkbox"
+                        checked={localSettings.types.some(
+                          (type) => type === image.type
+                        )}
+                        data-type={image.type}
+                        onChange={select_types}
+                      />
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          }
+          icon={{
+            fun: (icon) => <FontAwesomeIcon icon={icon} />,
+            parts: {
+              iconOpen: faCircleChevronDown,
+              iconClosed: faCircleChevronRight,
+            },
+          }}
+        />
+      ) : null}
       <div className="size">
         <p className="label-element">Size : </p>
         <Slider
@@ -157,7 +232,11 @@ export default function Settings({ category, change_settings }) {
       >
         <div
           className={`content ${localSettings.animation} label-element`}
-          style={{ fontSize: localSettings[measureRef.current] }}
+          style={
+            category.type === "images"
+              ? { width: localSettings[measureRef.current] }
+              : { fontSize: localSettings[measureRef.current] }
+          }
         >
           {sample}
         </div>
