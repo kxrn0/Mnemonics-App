@@ -1,193 +1,193 @@
 .day-set.light {
-  --bdrd: 0.5rem;
-  --box-shadow: none;
-  --text-shadow: none;
-  --see-bg: rgb(159, 246, 162);
-  --day-color: rgb(30, 4, 4);
-  --review-bg: rgb(204, 213, 236);
-  --delete-bg: rgb(236, 93, 117);
-  --data-bg: azure;
-  --data-color: rgb(139, 25, 25);
+    --bdrd: 0.5rem;
+    --box-shadow: none;
+    --text-shadow: none;
+    --see-bg: rgb(159, 246, 162);
+    --day-color: rgb(30, 4, 4);
+    --review-bg: rgb(204, 213, 236);
+    --delete-bg: rgb(236, 93, 117);
+    --data-bg: azure;
+    --data-color: rgb(139, 25, 25);
 }
 
 .day-set.dark {
-  --bdrd: 0.5rem;
-  --box-shadow: none;
-  --text-shadow: none;
-  --see-bg: rgb(175, 209, 177);
-  --day-color: rgb(242, 245, 250);
-  --review-bg: rgb(159, 170, 197);
-  --delete-bg: rgb(198, 147, 155);
-  --data-bg: black;
-  --data-color: rgb(22, 22, 255);
+    --bdrd: 0.5rem;
+    --box-shadow: none;
+    --text-shadow: none;
+    --see-bg: rgb(175, 209, 177);
+    --day-color: rgb(242, 245, 250);
+    --review-bg: rgb(159, 170, 197);
+    --delete-bg: rgb(198, 147, 155);
+    --data-bg: black;
+    --data-color: rgb(22, 22, 255);
 }
 
 .day-set.neom {
-  --bdrd: 1rem;
-  --box-shadow: 5px 5px 15px 0 rgb(0, 0, 0, 0.25),
-    -5px -5px 10px 0 rgb(255, 255, 255, 0.5);
-  --text-shadow: 1px 1px 1px rgb(0, 0, 0, 0.75),
-    -1px -1px 0 rgb(255, 255, 255, 0.75);
-  --see-bg: rgb(185, 241, 187);
-  --day-color: rgb(54, 27, 27);
-  --review-bg: rgb(220, 225, 239);
-  --delete-bg: rgb(242, 141, 158);
-  --data-bg: azure;
-  --data-color: gray;
+    --bdrd: 1rem;
+    --box-shadow: 5px 5px 15px 0 rgb(0, 0, 0, 0.25),
+        -5px -5px 10px 0 rgb(255, 255, 255, 0.5);
+    --text-shadow: 1px 1px 1px rgb(0, 0, 0, 0.75),
+        -1px -1px 0 rgb(255, 255, 255, 0.75);
+    --see-bg: rgb(185, 241, 187);
+    --day-color: rgb(54, 27, 27);
+    --review-bg: rgb(220, 225, 239);
+    --delete-bg: rgb(242, 141, 158);
+    --data-bg: azure;
+    --data-color: gray;
 }
 
 .day-set.light.numbers-decimal {
-  --bg: rgb(207, 171, 238);
+    --bg: rgb(207, 171, 238);
 }
 
 .day-set.dark.numbers-decimal {
-  --bg: rgb(19, 41, 109);
+    --bg: rgb(19, 41, 109);
 }
 
 .day-set.neom.numbers-decimal {
-  --bg: rgb(210, 219, 247);
+    --bg: rgb(210, 219, 247);
 }
 
 .day-set.light.numbers-binary {
-  --bg: rgb(0, 255, 238);
+    --bg: rgb(0, 255, 238);
 }
 
 .day-set.dark.numbers-binary {
-  --bg: rgb(11, 72, 68);
+    --bg: rgb(11, 72, 68);
 }
 
 .day-set.neom.numbers-binary {
-  --bg: rgb(203, 240, 237);
+    --bg: rgb(203, 240, 237);
 }
 
 .day-set.light.words {
-  --bg: rgb(242, 177, 98);
+    --bg: rgb(242, 177, 98);
 }
 
 .day-set.dark.words {
-  --bg: rgb(118, 105, 91);
+    --bg: rgb(118, 105, 91);
 }
 
 .day-set.neom.words {
-  --bg: rgb(249, 211, 166);
+    --bg: rgb(249, 211, 166);
 }
 
 .day-set.light.images {
-  --bg: rgb(225, 243, 89);
+    --bg: rgb(225, 243, 89);
 }
 
 .day-set.dark.images {
-  --bg: rgb(94, 132, 78);
+    --bg: rgb(94, 132, 78);
 }
 
 .day-set.neom.images {
-  --bg: rgb(232, 238, 186);
+    --bg: rgb(232, 238, 186);
 }
 
 .day-set {
-  background: var(--bg);
-  box-shadow: var(--box-shadow);
-  text-shadow: var(--text-shadow);
-  padding: 1rem;
-  border-radius: var(--bdrd);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: fit-content;
+    background: var(--bg);
+    box-shadow: var(--box-shadow);
+    text-shadow: var(--text-shadow);
+    padding: 1rem;
+    border-radius: var(--bdrd);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: fit-content;
 }
 
 .day-set button {
-  box-shadow: var(--box-shadow);
-  border: none;
-  border-radius: 0.25rem;
+    box-shadow: var(--box-shadow);
+    border: none;
+    border-radius: 0.25rem;
 }
 
 .day-set .set-name {
-  color: var(--day-color);
-  display: flex;
-  gap: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
+    color: var(--day-color);
+    display: flex;
+    gap: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
 }
 
 .day-set .set-name button {
-  color: var(--day-color);
-  background: transparent;
-  border: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  font-size: 1.25rem;
+    color: var(--day-color);
+    background: transparent;
+    border: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .day-set .set-name p {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 
 .day-set .set-details {
-  color: var(--day-color);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    color: var(--day-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .day-set .controls {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .day-set .controls button {
-  padding: 0.5rem 1rem;
-  width: 7rem;
+    padding: 0.5rem 1rem;
+    width: 7rem;
 }
 
 .day-set .controls .see-data {
-  background: var(--see-bg);
+    background: var(--see-bg);
 }
 
 .day-set .controls .review-data {
-  background: var(--review-bg);
+    background: var(--review-bg);
 }
 
 .day-set .reviews-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .day-set .reviews-section .reviews-label {
-  color: var(--day-color);
+    color: var(--day-color);
 }
 
 .day-set .delete-set {
-  background: var(--delete-bg);
-  color: azure;
-  padding: 0.5rem 1rem;
+    background: var(--delete-bg);
+    color: azure;
+    padding: 0.5rem 1rem;
 }
 
 .day-set .slide-screen .screen-content {
-  background: var(--data-bg);
-  padding: 1rem;
-  border-radius: 0.25rem;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    background: var(--data-bg);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .day-set .slide-screen .screen-content p {
-  color: var(--data-color);
-  text-shadow: var(--text-shadow);
-  padding: 1rem 0.5rem;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+    color: var(--data-color);
+    text-shadow: var(--text-shadow);
+    padding: 1rem 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .day-set .slide-screen .screen-content .data {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 .day-set .slide-screen .screen-content p:not(:last-child) {
-  border-bottom: 1px solid;
+    border-bottom: 1px solid;
 }

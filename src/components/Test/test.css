@@ -2,12 +2,22 @@
   --color: black;
   --button-bg: rgb(74, 234, 82);
   --shadow: none;
+  --border-color: rgb(179, 141, 141);
+  --shadow-color: rgb(255, 255, 171);
+  --select-bg: azure;
+  --toast-bg: red;
+  --toast-shadow: none;
 }
 
 .test.dark {
   --color: azure;
   --button-bg: rgb(110, 215, 110);
   --shadow: none;
+  --border-color: azure;
+  --shadow-color: rgb(98, 119, 158);
+  --select-bg: rgb(21, 12, 78);
+  --toast-bg: rgb(255, 110, 110);
+  --toast-shadow: none;
 }
 
 .test.neom {
@@ -15,14 +25,39 @@
   --button-bg: rgb(97, 225, 251);
   --shadow: 5px 5px 10px 0 rgb(0, 0, 0, 0.25),
     -5px -5px 10px 0 rgb(255, 255, 255, 0.5);
+  --border-color: rgb(231, 81, 81);
+  --shadow-color: rgb(255, 208, 246);
+  --select-bg: rgb(255, 227, 227);
+  --toast-bg: rgb(255, 179, 179);
+  --toast-shadow: 5px 5px 10px 0 rgba(191, 160, 160, 0.5);
 }
 
 .test {
   padding: 1rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+}
+
+.test .toast {
+  background: var(--toast-bg);
+  color: azure;
+  box-shadow: var(--toast-shadow);
+  position: fixed;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  transition: top 0.33s;
+  z-index: 1;
+}
+
+.test .toast.shown {
+  top: 5rem;
+}
+
+.test .toast.hidden {
+  top: -5rem;
 }
 
 .test .container {
@@ -60,6 +95,7 @@
 .test .check-button {
   background: var(--button-bg);
   box-shadow: var(--shadow);
+  width: fit-content;
   padding: 1rem 3rem;
   border: none;
   border-radius: 0.25rem;
@@ -67,106 +103,111 @@
 }
 
 .test .images .slots .slot.active {
-  outline: 2px solid red;
-  box-shadow: 0 0 10px 10px yellow;
+  outline: 2px solid var(--border-color);
+  box-shadow: 0 0 10px 10px var(--shadow-color);
 }
 
-@media screen and (max-width: 1000px) {
-  .test .images .slots {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    padding-bottom: 300px;
-  }
-
-  .test .images .slots .image button,
-  .test .images .bottom-text .active-image button {
-    background: rgb(40, 36, 36, 0.5);
-    color: azure;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 100%;
-    border: none;
-    font-size: 1rem;
-    display: grid;
-    place-items: center;
-  }
-
-  .test .images .slots li {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    justify-content: space-between;
-    width: 250px;
-  }
-
-  .test .images .slots .slot {
-    border: 1px solid;
-    width: 150px;
-    height: 150px;
-  }
-
-  .test .images .bottom-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgb(250, 247, 247);
-    padding: 30px;
-  }
-
-  .test .images .bottom-text .images-to-select {
-    border: 1px solid;
-    display: flex;
-    gap: 2rem;
-    overflow-x: scroll;
-    padding: 1rem;
-  }
-
-  .test .images .bottom-text .images-to-select li {
-    position: relative;
-    border: 1px solid;
-  }
-
-  .test .images .bottom-text .images-to-select li button {
-    position: absolute;
-    top: 1rem;
-  }
-
-  .test .images .bottom-text .images-to-select li .add {
-    left: 1rem;
-  }
-
-  .test .images .bottom-text .images-to-select li .expand {
-    right: 1rem;
-  }
-  .test .images .bottom-text .images-to-select img {
-    width: 150px;
-    height: 150px;
-  }
-
-  .test .images .bottom-text .images-to-select .byme {
-    display: block;
-    width: 150px;
-    height: 150px;
-  }
-
-  .test .images .slots .image {
-    position: relative;
-  }
-
-  .test .images .slots .image img {
-    width: 150px;
-    height: 150px;
-  }
-
-  .test .images .slots .image button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
+/* @media screen and (max-width: 1000px) { */
+.test .images .slots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding-bottom: 300px;
 }
+
+.test .images .slots .image button,
+.test .images .bottom-text .active-image button {
+  background: rgb(40, 36, 36, 0.5);
+  color: azure;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 100%;
+  border: none;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+.test .images .slots li {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 250px;
+}
+
+.test .images .slots li p {
+  color: var(--color);
+}
+
+.test .images .slots .slot {
+  border: 1px solid var(--border-color);
+  width: 150px;
+  height: 150px;
+}
+
+.test .images .bottom-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--select-bg);
+  padding: 30px;
+}
+
+.test .images .bottom-text .images-to-select {
+  width: 90vw;
+  display: flex;
+  gap: 2rem;
+  overflow-x: scroll;
+  padding: 1rem;
+}
+
+.test .images .bottom-text .images-to-select li {
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+.test .images .bottom-text .images-to-select li button {
+  position: absolute;
+  top: 1rem;
+}
+
+.test .images .bottom-text .images-to-select li .add {
+  left: 1rem;
+}
+
+.test .images .bottom-text .images-to-select li .expand {
+  right: 1rem;
+}
+.test .images .bottom-text .images-to-select img {
+  width: 150px;
+  height: 150px;
+}
+
+.test .images .bottom-text .images-to-select .byme {
+  display: block;
+  width: 150px;
+  height: 150px;
+}
+
+.test .images .slots .image {
+  position: relative;
+}
+
+.test .images .slots .image img {
+  width: 150px;
+  height: 150px;
+}
+
+.test .images .slots .image button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+/* } */

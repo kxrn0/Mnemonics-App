@@ -19,6 +19,7 @@ import logo from "./assets/app_logo.svg";
 import Train from "./components/Train/Train";
 import Test from "./components/Test/Test";
 import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
+import Preferences from "./components/Preferences/Preferences";
 import { update_set, create_set } from "./data";
 import "./style.css";
 import "./anime.css";
@@ -161,6 +162,15 @@ function App() {
                 }
               />
               <Route path="/train" element={<Dojo />} />
+              <Route
+                path="/settings"
+                element={
+                  <Preferences
+                    change_theme={change_theme}
+                    themes={["light", "dark", "neom"]}
+                  />
+                }
+              />
               {rottenDays.map((day) => (
                 <Route
                   key={day}
@@ -196,10 +206,10 @@ function App() {
                 element={<Test update_set={update} create_set={create} />}
               />
             </Routes>
-            <div
+            {/* <div
               style={{
                 position: "fixed",
-                bottom: "10rem",
+                top: "10rem",
                 right: "2rem",
               }}
             >
@@ -208,7 +218,7 @@ function App() {
                 currentTheme={theme}
                 change_theme={change_theme}
               />
-            </div>
+            </div> */}
           </ThemeContext.Provider>
         </ScrollWrapper>
       </BrowserRouter>

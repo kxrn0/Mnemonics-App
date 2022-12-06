@@ -7,6 +7,7 @@ import { faClose, faExpand, faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import "./test.css";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
+import SlideScreen from "../SlideScreen/SlideScreen";
 
 export default function Test({ update_set, create_set }) {
   const data = useLocation().state;
@@ -16,6 +17,10 @@ export default function Test({ update_set, create_set }) {
   const beginningOfTime = useRef(new Date());
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
+  const [currentSlot, setCurrentSlot] = useState(0);
+  const [randomized, setRandomized] = useState([]);
+  const [currentImage, setCurrentImage] = useState("");
+  const [toastError, setToastError] = useState(false);
 
   function handle_change(event) {
     const value = event.target.value;
@@ -27,6 +32,13 @@ export default function Test({ update_set, create_set }) {
   }
 
   async function check() {
+    if (elementsOfMan.some((element) => element.trim() === "")) {
+      setToastError(true);
+
+      setTimeout(() => setToastError(false), 3333);
+      return;
+    }
+
     const date = beginningOfTime.current.toDateString();
     const time = `${String(beginningOfTime.current.getHours()).padStart(
       2,
@@ -86,8 +98,9 @@ export default function Test({ update_set, create_set }) {
     });
   }
 
-  const [currentSlot, setCurrentSlot] = useState(0);
-  const [randomized, setRandomized] = useState([]);
+  function close_screen() {
+    setCurrentImage("");
+  }
 
   useEffect(() => {
     setRandomized(data.elements.sort(() => random(-1, 1)));
@@ -95,6 +108,17 @@ export default function Test({ update_set, create_set }) {
 
   return (
     <div className={`test ${theme}`}>
+      <div className={`toast ${toastError ? "shown" : "hidden"}`}>
+        Please fiill out all fields!
+      </div>
+      <SlideScreen
+        close={close_screen}
+        shown={currentImage !== ""}
+        closeButton={true}
+        closeWhenClickingOutside={true}
+      >
+        <img src={currentImage} />
+      </SlideScreen>
       {data.category === "images" ? (
         <div className="images">
           <ul className="slots">
@@ -130,7 +154,10 @@ export default function Test({ update_set, create_set }) {
                       >
                         <FontAwesomeIcon icon={faCircleArrowUp} />
                       </button>
-                      <button className="expand">
+                      <button
+                        className="expand"
+                        onClick={() => setCurrentImage(element.src)}
+                      >
                         <FontAwesomeIcon icon={faExpand} />
                       </button>
                     </div>
@@ -140,7 +167,7 @@ export default function Test({ update_set, create_set }) {
                 </li>
               ))}
             </ul>
-            <button className="check-button" onClick={() => console.log("hi")}>
+            <button className="check-button" onClick={check}>
               Check
             </button>
           </div>
