@@ -3,7 +3,7 @@ import Calendar from "../Calendar/Calendar";
 import Graph from "../Graph/Graph";
 import DaySet from "../DaySet/DaySet";
 import ThemeContext from "../../theme_context";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import SlideScreen from "../SlideScreen/SlideScreen";
 import Settings from "../Settings/Settings";
 
@@ -20,9 +20,11 @@ export default function Category({
   const theme = useContext(ThemeContext);
   const [seeingSettings, setSeeingSettings] = useState(false);
 
-  function actual_process(set, date) {
-    if (set.type !== category.type) return null;
-    return process(set, date);
+  function actual_process(sets, date) {
+    return process(
+      sets.filter((set) => set.type === category.type),
+      date
+    );
   }
 
   function change_settings(settings) {

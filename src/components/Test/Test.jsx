@@ -4,10 +4,10 @@ import ThemeContext from "../../theme_context";
 import random from "../../utilities/random";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faExpand, faUpload } from "@fortawesome/free-solid-svg-icons";
-
-import "./test.css";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 import SlideScreen from "../SlideScreen/SlideScreen";
+import { nanoid } from "nanoid";
+import "./test.css";
 
 export default function Test({ update_set, create_set }) {
   const data = useLocation().state;
@@ -45,7 +45,7 @@ export default function Test({ update_set, create_set }) {
       "0"
     )}:${String(beginningOfTime.current.getMinutes()).padStart(2, "0")}`;
     const duration = ~~((new Date() - beginningOfTime.current) / 1000);
-    const id = Math.random().toString();
+    const id = nanoid();
     const errors = [];
     const review = { date, time, duration, errors, id };
 
@@ -55,17 +55,17 @@ export default function Test({ update_set, create_set }) {
     }
 
     if (data.id) {
-      update_set(review, data.id);
+      await update_set(review, data.id);
     } else {
       const name = Math.random().toString(16).slice(-10);
-      const id = Math.random().toString(16);
+      const id = nanoid();
       const type = data.category;
       const avgScore =
         (data.elements.length - errors.length) / data.elements.length;
       const items = data.elements;
       const set = { name, id, type, avgScore, items, reviews: [review] };
 
-      create_set(set);
+      await create_set(set);
     }
 
     navigate(`/train/${data.category}`);
@@ -103,7 +103,7 @@ export default function Test({ update_set, create_set }) {
   }
 
   useEffect(() => {
-    setRandomized(data.elements.sort(() => random(-1, 1)));
+    setRandomized([...data.elements].sort(() => random(-1, 1)));
   }, []);
 
   return (
@@ -111,16 +111,16 @@ export default function Test({ update_set, create_set }) {
       <div className={`toast ${toastError ? "shown" : "hidden"}`}>
         Please fiill out all fields!
       </div>
-      <SlideScreen
-        close={close_screen}
-        shown={currentImage !== ""}
-        closeButton={true}
-        closeWhenClickingOutside={true}
-      >
-        <img src={currentImage} />
-      </SlideScreen>
       {data.category === "images" ? (
         <div className="images">
+          <SlideScreen
+            close={close_screen}
+            shown={currentImage !== ""}
+            closeButton={true}
+            closeWhenClickingOutside={true}
+          >
+            <img src={currentImage} />
+          </SlideScreen>
           <ul className="slots">
             {elementsOfMan.map((element, index) => (
               <li key={index}>

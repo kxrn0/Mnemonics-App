@@ -7,8 +7,8 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import "./calendar.css";
 import { nanoid } from "nanoid";
+import "./calendar.css";
 
 export default function Calendar({
   data,
@@ -34,14 +34,8 @@ export default function Calendar({
 
   function init() {
     const days = find_dates(presentTime.year, presentTime.month);
-    const processed = days.map((day) => {
-      let components;
-
-      components = [];
-
-      for (let elem of data) components.push(process(elem, day));
-
-      components = components.filter((cmp) => cmp !== null);
+    let processed = days.map((day) => {
+      const components = process(data, day);
 
       return { day, components, date: day.split(" ")[2], key: nanoid() };
     });
@@ -96,6 +90,7 @@ export default function Calendar({
         }
         if (boxTip.y + boxTip.height > window.innerHeight) {
           toolTip.style.top = `${-boxTip.height - 16}px`;
+          toolTip.style.transformOrigin = "bottom";
           tip.style.transform = "rotate(180deg)";
           tip.style.top = `${boxTip.height}px`;
         }
@@ -170,7 +165,7 @@ export default function Calendar({
                 >
                   <span className="tip"></span>
                   <ul>
-                    {day.components[0].map((component) => (
+                    {day.components.map((component) => (
                       <li key={component.key}>
                         <PreviewComponent body={component.body} />
                       </li>

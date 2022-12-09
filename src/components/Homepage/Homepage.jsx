@@ -5,7 +5,7 @@ import ReviewPreview from "../ReviewPreview/ReviewPreview";
 
 import "./homepage.css";
 
-export default function Homepage({ set, process, set_rotten_days }) {
+export default function Homepage({ set, process, set_rotten_days, test }) {
     return (
         <div className="homepage">
             <Clock />

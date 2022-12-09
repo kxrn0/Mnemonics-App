@@ -43,6 +43,7 @@ export default function Train({ category }) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      console.log(`${currentIndex}, ${Math.random().toString(16).slice(-5)}`);
       if (currentIndex < elements.length && elements.length)
         setCurrentIndex((prevIndex) => prevIndex + 1);
     }, category.secsPerEl * 1000);
