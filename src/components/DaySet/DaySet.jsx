@@ -1,36 +1,69 @@
 import Review from "../Review/Review";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import ThemeContext from "../../theme_context";
 import { useContext, useState } from "react";
 import SlideScreen from "../SlideScreen/SlideScreen";
 import "./day_set.css";
 
-export default function DaySet({ set, date }) {
+export default function DaySet({ set, date, delete_set, rename_set }) {
   const theme = useContext(ThemeContext);
   const [seeingData, setSeeingData] = useState(false);
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [newName, setNewName] = useState(set.name);
+  const [isAboutToDelete, setIsAboutToDelete] = useState(false);
+
+  function handle_change(event) {
+    setNewName(event.target.value);
+  }
+
+  function rename() {
+    const value = newName.trim();
+
+    if (!value) return;
+    rename_set(set.id, value);
+    setIsRenaming(false);
+  }
 
   return (
     <div className={`day-set ${theme} ${set.type}`}>
       <SlideScreen
         close={() => setSeeingData(false)}
-        shown={seeingData}
+        shown={seeingData || isAboutToDelete}
         closeButton={true}
         closeWhenClickingOutside={true}
       >
-        {set.items.map((item, index) => (
-          <p key={index}>
-            <span className="index">{index + 1}.- </span>
-            <span className="data">{item}</span>
-          </p>
-        ))}
+        {isAboutToDelete ? (
+          <p>dont</p>
+        ) : (
+          set.items.map((item, index) => (
+            <p key={index}>
+              <span className="index">{index + 1}.- </span>
+              <span className="data">{item}</span>
+            </p>
+          ))
+        )}
       </SlideScreen>
       <div className="set-name">
-        <p>{set.name}</p>
-        <button>
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
+        {isRenaming ? (
+          <div className="name-changer">
+            <button onClick={() => setIsRenaming(false)}>
+              <FontAwesomeIcon icon={faClose} />
+            </button>
+            <input type="text" value={newName} onChange={handle_change} />
+            <button onClick={rename}>
+              <FontAwesomeIcon icon={faCheck} />
+            </button>
+          </div>
+        ) : (
+          <div className="name-of-set">
+            <p>{set.name}</p>
+            <button onClick={() => setIsRenaming(true)}>
+              <FontAwesomeIcon icon={faEdit} />
+            </button>
+          </div>
+        )}
       </div>
       <div className="set-details">
         <p>Type: {set.type}</p>
@@ -46,7 +79,7 @@ export default function DaySet({ set, date }) {
           state={{
             newSet: false,
             data: set.items,
-            id: set.id
+            id: set.id,
           }}
         >
           <button className="review-data">Review</button>
@@ -64,7 +97,9 @@ export default function DaySet({ set, date }) {
           ) : null
         )}
       </div>
-      <button className="delete-set">Delete Set</button>
+      <button className="delete-set" onClick={() => setIsAboutToDelete(true)}>
+        Delete Set
+      </button>
     </div>
   );
 }

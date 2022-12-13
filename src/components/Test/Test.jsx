@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faExpand, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 import SlideScreen from "../SlideScreen/SlideScreen";
+import Loading from "../Loading/Loading";
 import { nanoid } from "nanoid";
 import "./test.css";
 
-export default function Test({ update_set, create_set }) {
+export default function Test({ update_set, create_set, upload_files }) {
   const data = useLocation().state;
   const [elementsOfMan, setElementsOfMan] = useState(() =>
     new Array(data.elements.length).fill("")
@@ -21,6 +22,7 @@ export default function Test({ update_set, create_set }) {
   const [randomized, setRandomized] = useState([]);
   const [currentImage, setCurrentImage] = useState("");
   const [toastError, setToastError] = useState(false);
+  const [isSneeding, setIsSneeding] = useState(false);
 
   function handle_change(event) {
     const value = event.target.value;
@@ -48,22 +50,48 @@ export default function Test({ update_set, create_set }) {
     const id = nanoid();
     const errors = [];
     const review = { date, time, duration, errors, id };
+    const setId = nanoid();
+    let byme;
 
-    for (let i = 0; i < data.elements.length; i++) {
-      if (data.elements[i] !== elementsOfMan[i].trim().toLowerCase())
-        errors.push({ index: i, incAnswer: elementsOfMan[i] });
-    }
+    setIsSneeding(true);
+
+    if (data.category === "images" && !data.id) {
+      const map = await upload_files(data.elements, setId);
+
+      data.elements = data.elements.map((element) => map.get(element.src));
+      byme = elementsOfMan.map((element) => map.get(element));
+
+      setElementsOfMan(byme);
+
+      for (let element of randomized) URL.revokeObjectURL(element);
+
+      for (let i = 0; i < data.elements.length; i++) {
+        if (data.elements[i] === byme[i])
+          errors.push({ index: i, incAnswer: byme[i] });
+      }
+    } else
+      for (let i = 0; i < data.elements.length; i++) {
+        if (data.elements[i] !== elementsOfMan[i].trim().toLowerCase())
+          errors.push({ index: 1, incAnswer: elementsOfMan[i] });
+      }
+
+    // for (let i = 0; i < data.elements.length; i++) {
+    //   if (data.elements[i] !== byme[i])
+    //     // if (data.elements[i] !== elementsOfMan[i].trim().toLowerCase())
+    //     // errors.push({ index: i, incAnswer: elementsOfMan[i] });
+    //     errors.push({ index: i, incAnswer: byme[i] });
+    // }
 
     if (data.id) {
       await update_set(review, data.id);
     } else {
       const name = Math.random().toString(16).slice(-10);
-      const id = nanoid();
+      // const id = nanoid();
       const type = data.category;
       const avgScore =
         (data.elements.length - errors.length) / data.elements.length;
       const items = data.elements;
-      const set = { name, id, type, avgScore, items, reviews: [review] };
+      const set = { name, id: setId, type, avgScore, items, reviews: [review] };
 
       await create_set(set);
     }
@@ -108,6 +136,9 @@ export default function Test({ update_set, create_set }) {
 
   return (
     <div className={`test ${theme}`}>
+      <button onClick={() => console.log(data)}>shalom</button>
+      <button onClick={() => console.log(elementsOfMan)}>byme</button>
+      <button onClick={() => console.log(randomized)}>nakadashi</button>
       <div className={`toast ${toastError ? "shown" : "hidden"}`}>
         Please fiill out all fields!
       </div>
@@ -115,11 +146,11 @@ export default function Test({ update_set, create_set }) {
         <div className="images">
           <SlideScreen
             close={close_screen}
-            shown={currentImage !== ""}
-            closeButton={true}
-            closeWhenClickingOutside={true}
+            shown={currentImage !== "" || isSneeding}
+            closeButton={!isSneeding}
+            closeWhenClickingOutside={!isSneeding}
           >
-            <img src={currentImage} />
+            {isSneeding ? <Loading /> : <img src={currentImage} />}
           </SlideScreen>
           <ul className="slots">
             {elementsOfMan.map((element, index) => (
@@ -147,7 +178,7 @@ export default function Test({ update_set, create_set }) {
                 <li key={index}>
                   {!elementsOfMan.includes(element.src) ? (
                     <div className="active-image">
-                      <img src={element.src} />
+                      <img src={data.id ? element : element.src} />
                       <button
                         className="add"
                         onClick={() => fill_slot(element.src)}

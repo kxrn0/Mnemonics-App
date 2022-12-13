@@ -156,34 +156,57 @@ function App() {
     setCats(newCats);
   }
 
+  async function rename_set(id, value) {
+    const setRef = doc(getFirestore(), `users/${userId}/sets/${id}`);
+
+    await updateDoc(setRef, { name: value });
+    setData((prevSets) =>
+      prevSets.map((set) => (set.id === id ? { ...set, name: value } : set))
+    );
+  }
+
+  async function delete_set(id) {
+    await deleteDoc(doc(getFirestore(), `users/${userId}/sets/${id}`));
+    setData((prevSets) => prevSets.filter((set) => set.id !== id));
+  }
+
   async function update(review, id) {
     const setRef = doc(getFirestore(), `users/${userId}/sets/${id}`);
-    const reviews = data.find((set) => set.id === id).reviews;
-
-    await updateDoc(setRef, { reviews: [...reviews, review] });
-    setData((prevData) =>
-      prevData.map((set) =>
-        set.id === id ? { ...set, reviews: [...set.reviews, review] } : set
-      )
+    const saidSet = data.find((set) => set.id === id);
+    const reviews = saidSet.reviews;
+    const newAvg = new_normal(
+      saidSet.avgScore,
+      (saidSet.items.length - review.errors.length) / saidSet.items.length,
+      saidSet.reviews.length
     );
 
-    // setData((prevData) =>
-    //   prevData.map((item) => {
-    //     if (item.id !== id) return item;
-    //     else {
-    //       const newAvg =
-    //         item.avgScore +
-    //         ((item.items.length - review.errors.length) / item.items.length -
-    //           item.avgScore) /
-    //           (item.items.length + 1);
-    //       return {
-    //         ...item,
-    //         avgScore: newAvg,
-    //         reviews: [...item.reviews, review],
-    //       };
-    //     }
-    //   })
-    // );
+    await updateDoc(setRef, {
+      reviews: [...reviews, review],
+      avgScore: newAvg,
+    });
+    setData((prevData) =>
+      prevData.map((set) =>
+        set.id === id
+          ? { ...set, reviews: [...set.reviews, review], avgScore: newAvg }
+          : set
+      )
+    );
+  }
+
+  async function upload_files(elements, id) {
+    const map = new Map();
+
+    for (let element of elements) {
+      const filePath = `users/${userId}/sets/${id}/${element.file.name}`;
+      const imgRef = ref(getStorage(), filePath);
+      let imageURL;
+
+      await uploadBytesResumable(imgRef, element.file);
+      imageURL = await getDownloadURL(imgRef);
+
+      map.set(element.src, imageURL);
+    }
+    return map;
   }
 
   async function create(set) {
@@ -204,35 +227,6 @@ function App() {
     const querySnapshot = await getDocs(setsQuery);
     const sets = [];
 
-    // querySnapshot.forEach((doc) => console.log(doc.data()));
-    // const byme = querySnapshot.map((doc) => doc.data());
-    // console.log(byme);
-
-    // querySnapshot.forEach((doc) => console.log(doc.data()));
-    // const unsub = onSnapshot(setsQuery, (snapshot) =>
-    //   snapshot.docChanges().forEach(async (change) => {
-    //     if (change.type === "removed")
-    //       setData((prevSets) =>
-    //         prevSets.filter((set) => set.id !== change.doc.id)
-    //       );
-    //     else {
-    //       const set = change.doc.data();
-    //       const reviews = await load_reviews(set.id);
-
-    //       console.log(reviews);
-
-    //       setData((prevSets) => {
-    //         const current = prevSets.find((other) => other.id === set.id);
-
-    //         if (!current) return [...prevSets, current];
-    //         else
-    //           return prevSets.map((other) =>
-    //             other.id === set.id ? { ...set, reviews } : other
-    //           );
-    //       });
-    //     }
-    //   })
-    // );
     const userRef = doc(getFirestore(), `users/${userId}`);
     const userSnap = await getDoc(userRef);
 
@@ -247,10 +241,7 @@ function App() {
     }
 
     querySnapshot.forEach((doc) => sets.push(doc.data()));
-    querySnapshot.forEach((doc) => console.log(doc));
     setData(sets);
-
-    // return unsub;
   }
 
   useState(() => initializeApp(firebaseConfig), []);
@@ -265,13 +256,10 @@ function App() {
         setUserId(getAuth().currentUser.uid);
       }
     });
-
-    // return () => (unsub ? unsub() : null);
   }, []);
 
   return (
     <div className={`App ${theme}`}>
-      <button onClick={() => console.log(data)}>shalom</button>
       {isLoggedIn ? (
         <BrowserRouter>
           <ScrollWrapper>
@@ -322,7 +310,14 @@ function App() {
                   <Route
                     key={day}
                     path={`/days/${day}`}
-                    element={<DayPage sets={data} date={day} />}
+                    element={
+                      <DayPage
+                        sets={data}
+                        date={day}
+                        delete_set={delete_set}
+                        rename_set={rename_set}
+                      />
+                    }
                   />
                 ))}
                 {cats.map((cat) => (
@@ -338,6 +333,8 @@ function App() {
                         PreviewComponent={ReviewPreview}
                         set_rotten_days={set_rotten_days}
                         save_settings={change_settings}
+                        delete_set={delete_set}
+                        rename_set={rename_set}
                       />
                     }
                   />
@@ -351,22 +348,15 @@ function App() {
                 ))}
                 <Route
                   path="/test/"
-                  element={<Test update_set={update} create_set={create} />}
+                  element={
+                    <Test
+                      update_set={update}
+                      create_set={create}
+                      upload_files={upload_files}
+                    />
+                  }
                 />
               </Routes>
-              <div
-                style={{
-                  position: "fixed",
-                  top: "10rem",
-                  right: "2rem",
-                }}
-              >
-                <ThemeToggle
-                  themes={["light", "dark", "neom"]}
-                  currentTheme={theme}
-                  change_theme={change_theme}
-                />
-              </div>
             </ThemeContext.Provider>
           </ScrollWrapper>
         </BrowserRouter>

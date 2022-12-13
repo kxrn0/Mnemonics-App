@@ -16,6 +16,8 @@ export default function Category({
   PreviewComponent,
   set_rotten_days,
   save_settings,
+  delete_set,
+  rename_set,
 }) {
   const theme = useContext(ThemeContext);
   const [seeingSettings, setSeeingSettings] = useState(false);
@@ -64,7 +66,13 @@ export default function Category({
       <Graph sets={sets} category={category.type} />
       {sets.map((set) =>
         set.type === category.type ? (
-          <DaySet key={set.id} set={set} date="all" />
+          <DaySet
+            key={set.id}
+            set={set}
+            delete_set={delete_set}
+            rename_set={rename_set}
+            date="all"
+          />
         ) : null
       )}
     </div>
