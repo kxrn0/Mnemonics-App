@@ -65,8 +65,6 @@ export default function Test({ update_set, create_set, upload_files }) {
       }));
       byme = elementsOfMan.map((element) => map.get(element).imageURL);
 
-      setElementsOfMan(byme);
-
       for (let element of randomized) URL.revokeObjectURL(element);
 
       for (let i = 0; i < data.elements.length; i++) {
@@ -77,9 +75,14 @@ export default function Test({ update_set, create_set, upload_files }) {
       for (let i = 0; i < data.elements.length; i++) {
         let man, element;
 
-        if (data.category === "images") man = elementsOfMan[i];
-        else man = elementsOfMan[i].trim().toLowerCase();
-        if (data.elements[i].url !== man) errors.push({ index: i, incAnswer: man });
+        if (data.category === "images") {
+          man = elementsOfMan[i];
+          element = data.elements[i].url;
+        } else {
+          man = elementsOfMan[i].trim().toLowerCase();
+          element = data.elements[i];
+        }
+        if (element !== man) errors.push({ index: i, incAnswer: man });
       }
 
     if (data.id) {
@@ -135,8 +138,6 @@ export default function Test({ update_set, create_set, upload_files }) {
 
   return (
     <div className={`test ${theme}`}>
-      <button onClick={() => console.log(randomized)}>shalom</button>
-      <button onClick={() => console.log(elementsOfMan)}>byme</button>
       <div className={`toast ${toastError ? "shown" : "hidden"}`}>
         Please fiill out all fields!
       </div>

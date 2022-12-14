@@ -45,6 +45,18 @@
   background: var(--background);
 }
 
+.App.empty {
+  display: grid;
+  place-items: center;
+}
+
+.App .sign-in {
+  background: greenyellow;
+  padding: 1rem 2rem;
+  border-radius: .5rem;
+  border: none;
+}
+
 .App .navbar {
   background: var(--nav-bg);
   display: flex;
@@ -58,18 +70,7 @@
   padding: 0.5rem;
 }
 
-.App .navbar .logo .user {
-  background: rgb(206, 140, 140);
-  color: azure;
-  display: grid;
-  place-items: center;
-  border-radius: 100%;
-  width: 3rem;
-  height: 3rem;
-  font-size: 0.75rem;
-}
-
-.App .navbar .logo img {
+.App .navbar .logo .logo-picture {
   width: 5rem;
 }
 
@@ -84,4 +85,11 @@
 .App .navbar .links a {
   color: azure;
   filter: var(--link-shadow);
+}
+
+.App .navbar .profile-picture {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 100%;
+  object-fit: cover;
 }

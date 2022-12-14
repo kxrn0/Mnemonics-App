@@ -3,3 +3,16 @@
   display: grid;
   place-items: center;
 }
+
+.preferences .content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.preferences .content .sign-out {
+  background: rgb(255, 198, 198);
+  padding: 1rem;
+  border-radius: .5rem;
+  border: none;
+}

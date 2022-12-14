@@ -15,6 +15,7 @@ export default function Calendar({
   process,
   PreviewComponent,
   set_rotten_days,
+  category,
 }) {
   const theme = useContext(ThemeContext);
   const [days, setDays] = useState([]);
@@ -174,6 +175,7 @@ export default function Calendar({
                   <Link
                     className="new-page-button"
                     to={`/days/${day.day.split(" ").join("-")}`}
+                    state={{ category }}
                   >
                     Open
                   </Link>

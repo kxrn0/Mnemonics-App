@@ -1,19 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import ThemeContext from "./theme_context";
-import ThemeToggle from "./components/ThemeToggle/ThemeToggle";
-import memData from "./data";
 import Homepage from "./components/Homepage/Homepage";
 import Dojo from "./components/Dojo/Dojo";
 import DayPage from "./components/DayPage/DayPage";
 import Category from "./components/Category/Category";
 import ReviewPreview from "./components/ReviewPreview/ReviewPreview";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -28,11 +20,8 @@ import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
 import Loading from "./components/Loading/Loading";
 import SlideScreen from "./components/SlideScreen/SlideScreen";
 import Preferences from "./components/Preferences/Preferences";
-import { update_set, create_set } from "./data";
 import new_normal from "./utilities/new_normal";
-import "./style.css";
-import "./anime.css";
-
+import placeholder from "./assets/ac.png";
 import firebaseConfig from "./firebase.config";
 import { initializeApp } from "firebase/app";
 import {
@@ -45,10 +34,8 @@ import {
 import {
   getFirestore,
   collection,
-  addDoc,
   query,
   orderBy,
-  onSnapshot,
   updateDoc,
   doc,
   getDoc,
@@ -65,7 +52,8 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { nanoid } from "nanoid";
-import load_reviews from "./utilities/load_reviews";
+import "./style.css";
+import "./anime.css";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -84,8 +72,7 @@ function App() {
       elements: 10,
       secsPerEl: 3,
       animation: "drop",
-      // types: ["ten_print", "circle_packing", "shapes", "water_color"],
-      types: ["circle_packing"],
+      types: ["ten_print", "circle_packing", "shapes"],
       width: 300,
     },
     {
@@ -108,6 +95,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
   const [iseDeleting, setIsDeleting] = useState(false);
+  const [photo, setPhoto] = useState(placeholder);
 
   async function sign_in() {
     try {
@@ -121,6 +109,7 @@ function App() {
 
   async function sign_out() {
     await signOut(getAuth());
+    setUserId("");
   }
 
   function set_rotten_days(days) {
@@ -185,7 +174,7 @@ function App() {
     }
     await deleteDoc(doc(getFirestore(), `users/${userId}/sets/${id}`));
     setData((prevSets) => prevSets.filter((set) => set.id !== id));
-    
+
     setIsDeleting(false);
   }
 
@@ -262,6 +251,8 @@ function App() {
       setCats(userSnap.data().categories);
     }
 
+    setPhoto(getAuth().currentUser.photoURL);
+
     querySnapshot.forEach((doc) => sets.push(doc.data()));
     setData(sets);
   }
@@ -269,19 +260,17 @@ function App() {
   useState(() => initializeApp(firebaseConfig), []);
 
   useEffect(() => {
-    let unsub;
-
     onAuthStateChanged(getAuth(), async () => {
       setIsLoggedIn(() => !!getAuth().currentUser);
       if (getAuth().currentUser) {
-        unsub = await load_data();
+        await load_data();
         setUserId(getAuth().currentUser.uid);
       }
     });
   }, []);
 
   return (
-    <div className={`App ${theme}`}>
+    <div className={`App ${theme} ${userId ? "" : "empty"}`}>
       <SlideScreen
         close={() => console.log("no, lol")}
         shown={iseDeleting}
@@ -296,8 +285,12 @@ function App() {
             <ThemeContext.Provider value={theme}>
               <nav className="navbar">
                 <div className="logo">
-                  <img src={logo} alt="" />
-                  <p className="user">byme</p>
+                  <img src={logo} alt="logo" className="logo-picture" />
+                  <img
+                    src={photo}
+                    alt="user photo"
+                    className="profile-picture"
+                  />
                 </div>
                 <div className="links">
                   <Link to="/">
@@ -333,6 +326,7 @@ function App() {
                     <Preferences
                       change_theme={change_theme}
                       themes={["light", "dark", "neom"]}
+                      sign_out={sign_out}
                     />
                   }
                 />
@@ -391,7 +385,9 @@ function App() {
           </ScrollWrapper>
         </BrowserRouter>
       ) : (
-        <button onClick={sign_in}>log in</button>
+        <button className="sign-in" onClick={sign_in}>
+          log in
+        </button>
       )}
     </div>
   );

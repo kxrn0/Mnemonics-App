@@ -5,8 +5,9 @@
   --border-color: rgb(179, 141, 141);
   --shadow-color: rgb(255, 255, 171);
   --select-bg: azure;
-  --toast-bg: red;
+  --toast-bg: rgb(255, 100, 100);
   --toast-shadow: none;
+  --toast-progress: rgb(128, 0, 0);
 }
 
 .test.dark {
@@ -18,6 +19,7 @@
   --select-bg: rgb(21, 12, 78);
   --toast-bg: rgb(255, 110, 110);
   --toast-shadow: none;
+  --toast-progress: rgb(255, 208, 208);
 }
 
 .test.neom {
@@ -30,6 +32,7 @@
   --select-bg: rgb(255, 227, 227);
   --toast-bg: rgb(255, 179, 179);
   --toast-shadow: 5px 5px 10px 0 rgba(191, 160, 160, 0.5);
+  --toast-progress: rgb(255, 100, 100);
 }
 
 .test {
@@ -58,6 +61,19 @@
 
 .test .toast.hidden {
   top: -5rem;
+}
+
+.test .toast.shown::after {
+  background: var(--toast-progress);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  border-radius: 6px;
+  animation: shrink 3.333s linear forwards;
 }
 
 .test .container {

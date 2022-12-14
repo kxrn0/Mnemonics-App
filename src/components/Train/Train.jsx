@@ -11,7 +11,7 @@ import "./train.css";
 export default function Train({ category }) {
   const params = useLocation().state;
   const [elements, setElements] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(() => 0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function Train({ category }) {
       }, category.secsPerEl * 1000);
     }
 
-    return () => clearInterval(intervalId);
+    return () => (intervalId ? clearInterval(intervalId) : "");
   }, [elements]);
 
   return (

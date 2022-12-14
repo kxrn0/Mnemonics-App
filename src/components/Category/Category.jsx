@@ -62,6 +62,7 @@ export default function Category({
         process={actual_process}
         PreviewComponent={PreviewComponent}
         set_rotten_days={set_rotten_days}
+        category={category.type}
       />
       <Graph sets={sets} category={category.type} />
       {sets.map((set) =>

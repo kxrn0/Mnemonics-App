@@ -221,11 +221,8 @@
   border-radius: 0.25rem;
 }
 
-/* .settings .drawer {
-  background: rgb(237, 187, 187);
-} */
-
 .settings .drawer .top {
+  color: var(--color);
   display: flex;
   gap: 1rem;
 }
@@ -279,16 +276,4 @@
 .settings .drawer .bottom .image input[type="checkbox"]:checked ~ svg {
   filter: drop-shadow(3px 3px 3px rgb(49, 6, 6));
   display: block;
-}
-
-@keyframes size {
-  from {
-    width: 0;
-    height: 0;
-  }
-
-  to {
-    width: 0.5rem;
-    height: 0.5rem;
-  }
 }
