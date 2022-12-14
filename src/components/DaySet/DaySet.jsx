@@ -5,6 +5,7 @@ import { faEdit, faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import ThemeContext from "../../theme_context";
 import { useContext, useState } from "react";
 import SlideScreen from "../SlideScreen/SlideScreen";
+
 import "./day_set.css";
 
 export default function DaySet({ set, date, delete_set, rename_set }) {
@@ -29,18 +30,48 @@ export default function DaySet({ set, date, delete_set, rename_set }) {
   return (
     <div className={`day-set ${theme} ${set.type}`}>
       <SlideScreen
-        close={() => setSeeingData(false)}
+        close={() => {
+          setSeeingData(false);
+          setIsAboutToDelete(false);
+        }}
         shown={seeingData || isAboutToDelete}
         closeButton={true}
         closeWhenClickingOutside={true}
       >
         {isAboutToDelete ? (
-          <p>dont</p>
+          <div className="deletion">
+            <div className="message">
+              <p className="question">Do you really wish to delete</p>
+              <p className="name-of-the-set">{set.name}</p>
+              <p className="mark">?</p>
+            </div>
+            <div className="buttons">
+              <button
+                className="continue"
+                onClick={() => {
+                  setIsAboutToDelete(false);
+                  delete_set(set.id);
+                }}
+              >
+                Continue
+              </button>
+              <button
+                className="cancel"
+                onClick={() => setIsAboutToDelete(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         ) : (
           set.items.map((item, index) => (
-            <p key={index}>
+            <p key={index} className="showcase-element">
               <span className="index">{index + 1}.- </span>
-              <span className="data">{item}</span>
+              {set.type === "images" ? (
+                <img src={item.url} className="image-item" />
+              ) : (
+                <span className="data">{item}</span>
+              )}
             </p>
           ))
         )}
@@ -93,6 +124,7 @@ export default function DaySet({ set, date, delete_set, rename_set }) {
               key={review.id}
               review={review}
               totalItems={set.items.length}
+              type={set.type}
             />
           ) : null
         )}

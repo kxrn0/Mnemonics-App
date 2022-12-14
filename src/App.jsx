@@ -7,7 +7,13 @@ import Dojo from "./components/Dojo/Dojo";
 import DayPage from "./components/DayPage/DayPage";
 import Category from "./components/Category/Category";
 import ReviewPreview from "./components/ReviewPreview/ReviewPreview";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -19,6 +25,8 @@ import logo from "./assets/app_logo.svg";
 import Train from "./components/Train/Train";
 import Test from "./components/Test/Test";
 import ScrollWrapper from "./components/ScrollWrapper/ScrollWrapper";
+import Loading from "./components/Loading/Loading";
+import SlideScreen from "./components/SlideScreen/SlideScreen";
 import Preferences from "./components/Preferences/Preferences";
 import { update_set, create_set } from "./data";
 import new_normal from "./utilities/new_normal";
@@ -99,6 +107,7 @@ function App() {
   ]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
+  const [iseDeleting, setIsDeleting] = useState(false);
 
   async function sign_in() {
     try {
@@ -166,11 +175,24 @@ function App() {
   }
 
   async function delete_set(id) {
+    const set = data.find((set) => set.id === id);
+
+    setIsDeleting(true);
+
+    if (set.type === "images") {
+      for (let image of set.items)
+        await deleteObject(ref(getStorage(), image.uri));
+    }
     await deleteDoc(doc(getFirestore(), `users/${userId}/sets/${id}`));
     setData((prevSets) => prevSets.filter((set) => set.id !== id));
+    
+    setIsDeleting(false);
   }
 
   async function update(review, id) {
+    console.log("review: ");
+    console.log(review);
+
     const setRef = doc(getFirestore(), `users/${userId}/sets/${id}`);
     const saidSet = data.find((set) => set.id === id);
     const reviews = saidSet.reviews;
@@ -200,11 +222,13 @@ function App() {
       const filePath = `users/${userId}/sets/${id}/${element.file.name}`;
       const imgRef = ref(getStorage(), filePath);
       let imageURL;
-
-      await uploadBytesResumable(imgRef, element.file);
+      const fileSnapshot = await uploadBytesResumable(imgRef, element.file);
       imageURL = await getDownloadURL(imgRef);
 
-      map.set(element.src, imageURL);
+      map.set(element.src, {
+        imageURL,
+        storageURI: fileSnapshot.metadata.fullPath,
+      });
     }
     return map;
   }
@@ -223,10 +247,8 @@ function App() {
       collection(getFirestore(), `users/${userId}/sets`),
       orderBy("timestamp", "desc")
     );
-
     const querySnapshot = await getDocs(setsQuery);
     const sets = [];
-
     const userRef = doc(getFirestore(), `users/${userId}`);
     const userSnap = await getDoc(userRef);
 
@@ -260,6 +282,14 @@ function App() {
 
   return (
     <div className={`App ${theme}`}>
+      <SlideScreen
+        close={() => console.log("no, lol")}
+        shown={iseDeleting}
+        closeButton={false}
+        closeWhenClickingOutside={false}
+      >
+        {iseDeleting ? <Loading /> : null}
+      </SlideScreen>
       {isLoggedIn ? (
         <BrowserRouter>
           <ScrollWrapper>

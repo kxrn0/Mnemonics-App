@@ -8,6 +8,7 @@ import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 import SlideScreen from "../SlideScreen/SlideScreen";
 import Loading from "../Loading/Loading";
 import { nanoid } from "nanoid";
+
 import "./test.css";
 
 export default function Test({ update_set, create_set, upload_files }) {
@@ -58,35 +59,33 @@ export default function Test({ update_set, create_set, upload_files }) {
     if (data.category === "images" && !data.id) {
       const map = await upload_files(data.elements, setId);
 
-      data.elements = data.elements.map((element) => map.get(element.src));
-      byme = elementsOfMan.map((element) => map.get(element));
+      data.elements = data.elements.map((element) => ({
+        url: map.get(element.src).imageURL,
+        uri: map.get(element.src).storageURI,
+      }));
+      byme = elementsOfMan.map((element) => map.get(element).imageURL);
 
       setElementsOfMan(byme);
 
       for (let element of randomized) URL.revokeObjectURL(element);
 
       for (let i = 0; i < data.elements.length; i++) {
-        if (data.elements[i] === byme[i])
+        if (data.elements[i].url !== byme[i])
           errors.push({ index: i, incAnswer: byme[i] });
       }
     } else
       for (let i = 0; i < data.elements.length; i++) {
-        if (data.elements[i] !== elementsOfMan[i].trim().toLowerCase())
-          errors.push({ index: 1, incAnswer: elementsOfMan[i] });
-      }
+        let man, element;
 
-    // for (let i = 0; i < data.elements.length; i++) {
-    //   if (data.elements[i] !== byme[i])
-    //     // if (data.elements[i] !== elementsOfMan[i].trim().toLowerCase())
-    //     // errors.push({ index: i, incAnswer: elementsOfMan[i] });
-    //     errors.push({ index: i, incAnswer: byme[i] });
-    // }
+        if (data.category === "images") man = elementsOfMan[i];
+        else man = elementsOfMan[i].trim().toLowerCase();
+        if (data.elements[i].url !== man) errors.push({ index: i, incAnswer: man });
+      }
 
     if (data.id) {
       await update_set(review, data.id);
     } else {
       const name = Math.random().toString(16).slice(-10);
-      // const id = nanoid();
       const type = data.category;
       const avgScore =
         (data.elements.length - errors.length) / data.elements.length;
@@ -136,9 +135,8 @@ export default function Test({ update_set, create_set, upload_files }) {
 
   return (
     <div className={`test ${theme}`}>
-      <button onClick={() => console.log(data)}>shalom</button>
+      <button onClick={() => console.log(randomized)}>shalom</button>
       <button onClick={() => console.log(elementsOfMan)}>byme</button>
-      <button onClick={() => console.log(randomized)}>nakadashi</button>
       <div className={`toast ${toastError ? "shown" : "hidden"}`}>
         Please fiill out all fields!
       </div>
@@ -176,18 +174,24 @@ export default function Test({ update_set, create_set, upload_files }) {
             <ul className="images-to-select">
               {randomized.map((element, index) => (
                 <li key={index}>
-                  {!elementsOfMan.includes(element.src) ? (
+                  {!elementsOfMan.includes(
+                    data.id ? element.url : element.src
+                  ) ? (
                     <div className="active-image">
-                      <img src={data.id ? element : element.src} />
+                      <img src={data.id ? element.url : element.src} />
                       <button
                         className="add"
-                        onClick={() => fill_slot(element.src)}
+                        onClick={() =>
+                          fill_slot(data.id ? element.url : element.src)
+                        }
                       >
                         <FontAwesomeIcon icon={faCircleArrowUp} />
                       </button>
                       <button
                         className="expand"
-                        onClick={() => setCurrentImage(element.src)}
+                        onClick={() =>
+                          setCurrentImage(data.id ? element.url : element.src)
+                        }
                       >
                         <FontAwesomeIcon icon={faExpand} />
                       </button>

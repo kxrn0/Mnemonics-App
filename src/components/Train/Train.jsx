@@ -43,7 +43,7 @@ export default function Train({ category }) {
 
   useEffect(() => {
     let intervalId;
-    
+
     if (elements.length) {
       intervalId = setInterval(() => {
         console.log(`${currentIndex}, ${Math.random().toString(16).slice(-5)}`);
@@ -67,7 +67,11 @@ export default function Train({ category }) {
               <img
                 className={`item ${category.animation}`}
                 style={{ width: category.width }}
-                src={elements[currentIndex].src}
+                src={
+                  params.newSet
+                    ? elements[currentIndex].src
+                    : elements[currentIndex].url
+                }
                 alt="image"
               />
             ) : (

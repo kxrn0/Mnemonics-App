@@ -1,5 +1,5 @@
 .review.light {
-  --background: rgb(222, 248, 92);
+  --background: rgb(57, 255, 8);
   --shadow: none;
   --inner-shadow: none;
   --text-shadow: none;
@@ -69,6 +69,10 @@
   gap: 1rem;
 }
 
+.review .drawer .bottom {
+  margin-top: .5rem;
+}
+
 .review .drawer .icon {
   color: rgb(14, 61, 61);
   font-size: 1rem;
@@ -95,3 +99,33 @@
 .review .drawer .errors tbody tr:nth-child(odd) {
   background: rgba(110, 117, 224, 0.25);
 }
+
+.review .drawer .errors tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.review .drawer .errors .image-error {
+  position: relative;
+}
+
+.review .drawer .errors .image-error button {
+  background-color: rgb(3, 19, 34, 0.5);
+  color: aliceblue;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.day-set .review .slide-screen .screen-content {
+  padding: 0;
+}
+
