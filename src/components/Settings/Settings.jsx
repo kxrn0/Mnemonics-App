@@ -12,7 +12,7 @@ import get_words from "../../utilities/get_words";
 import get_numbers from "../../utilities/get_numbers";
 import random from "../../utilities/random";
 import tenPrintSample from "../../assets/smap/ten_print_sample.png";
-import waterColorSample from "../../assets/smap/water_color_sample.png";
+// import waterColorSample from "../../assets/smap/water_color_sample.png";
 import shapesSample from "../../assets/smap/shapes_sample.png";
 import circlePackingSample from "../../assets/smap/circle_packing_sample.png";
 import "./settings.css";
@@ -24,7 +24,7 @@ export default function Settings({ category, change_settings }) {
   const range =
     category.type === "images" ? { from: 100, to: 300 } : { from: 16, to: 80 };
   const sampleImages = useRef([
-    { src: waterColorSample, type: "water_color" },
+    // { src: waterColorSample, type: "water_color" },
     { src: tenPrintSample, type: "ten_print" },
     { src: shapesSample, type: "shapes" },
     { src: circlePackingSample, type: "circle_packing" },
