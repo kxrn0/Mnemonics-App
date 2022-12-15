@@ -54,6 +54,7 @@ import {
 import { nanoid } from "nanoid";
 import "./style.css";
 import "./anime.css";
+import About from "./components/About/About";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -380,6 +381,7 @@ function App() {
                     />
                   }
                 />
+                <Route path="/info" element={<About />} />
               </Routes>
             </ThemeContext.Provider>
           </ScrollWrapper>
